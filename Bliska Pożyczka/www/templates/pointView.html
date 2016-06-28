@@ -1,0 +1,98 @@
+<ion-view title="Dane punktu: {{pointInfo.data.nazwa}}">
+<ion-content class="has-header padding">
+  <div class="card" >
+	<div class="item item-image" style="padding:15px">
+		<div ng-if="pointInfo.data.zdjecie">
+			<img src="{{pointInfo.data.zdjecie}}" style="max-width:300px;text-align:center;margin-bottom:20px;border-radius: 6px;">
+		</div>
+	</div>
+	<div class="item item-text-wrap ">
+		<strong style="color:#29BFAF;font-size: 150%;">{{pointInfo.data.nazwa}}</strong>
+		<p>Nazwa punktu</p>
+	</div>
+	<div class="item item-text-wrap ">
+		<strong style="color:#29BFAF;font-size: 100%;">{{pointInfo.data.nazwa_sieci}}</strong>
+		<p>Nazwa sieci</p>
+	</div>
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane teleadresowe:
+	</div>
+	<div class="item item-text-wrap ">
+		<h2>{{pointInfo.data.miasto}}, {{pointInfo.data.kod_pocztowy}}, {{pointInfo.data.ulica}} {{pointInfo.data.numer}}</h2>
+		<p>Adres punktu</p>
+	</div>
+	<div ng-if="pointInfo.data.komentarz_lokalizacji!=''">
+		<div class="item item-text-wrap">
+			<h2>{{pointInfo.data.komentarz_lokalizacji}}</h2>
+			<p>Opis lokalizacji</p>
+		</div>
+	</div>
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header" >
+     Godziny otwarcia
+	</div>
+	<div class="item item-text-wrap">
+		<h2>{{pointInfo.data.otw_robocze}} - {{pointInfo.data.zam_robocze}}</h2>
+		<p>W dni robocze</p>
+	</div>
+	<div >
+		<div class="item item-text-wrap">
+			<h2><div ng-if="pointInfo.data.otw_swieto!=''">{{pointInfo.data.otw_swieto}} - {{pointInfo.data.zam_swieto}}</div><div ng-if="pointInfo.data.otw_swieto==''">nieczynne</div></h2>
+			<p>W dni wolne</p>
+		</div>
+	</div>
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Oferta
+	</div>
+	<div class="item item-text-wrap">
+		<h2>{{pointInfo.data.min_pozyczka}} PLN - {{pointInfo.data.max_pozyczka}} PLN</h2>
+		<p>Wysokość pożyczki</p>
+	</div>
+	<div class="item item-text-wrap">
+		<h2>{{pointInfo.data.czas_kontaktu}} minut</h2>
+		<p>Czas oczekiwania</p>
+	</div>
+	<div ng-if="pointInfo.data.kwota_gotowka>0">
+		<div class="item item-text-wrap">
+			<h2>{{pointInfo.data.kwota_gotowka}} PLN</h2>
+			<p>Maksymalna pożyczka wypłacana w gotówce</p>
+		</div>
+	</div>
+	<div ng-if="pointInfo.data.kwota_bez_bik>0">
+		<div class="item item-text-wrap">
+			<h2>{{pointInfo.data.kwota_bez_bik}} PLN</h2>
+			<p>Maksymalna pożyczka bez sprawdzania BIK</p>
+		</div>
+	</div>
+	<div ng-if="pointInfo.data.kwota_bez_zaswiadczen>0">
+		<div class="item item-text-wrap">
+			<h2>{{pointInfo.data.kwota_bez_zaswiadczen}} PLN</h2>
+			<p>Maksymalna pożyczka bez zaświadczeń o zarobkach</p>
+		</div>
+	</div>
+	<div ng-if="pointInfo.data.tylko_online>0">
+		<div class="item item-text-wrap">
+			<h2>Wypłata tylko przelewem na konto (proces online)</h2>
+		</div>
+	</div>
+	<div ng-if="pointInfo.data.opis!=''">
+		<div class="item item-text-wrap">
+		<p>{{pointInfo.data.opis}}</p>
+		</div>
+	</div>
+	
+  </div>
+</ion-content>
+</ion-view>
+<ion-footer-bar class="bar-dark">
+			<a href="#/map/home" nav-clear menu-close class="button button-small button-dark" >wróć do mapy</button>
+			<a href="#/map/confirm/{{pointId}}" class="button button-small button-assertive pull-right" >Zamów pożyczkę</button>
+</ion-footer-bar>

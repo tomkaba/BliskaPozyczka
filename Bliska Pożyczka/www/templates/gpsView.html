@@ -1,0 +1,31 @@
+<ion-view> 
+			<ion-nav-title >
+				<span ng-show="!whoiswhere"  style="float:left"><ion-spinner style="margin-top:5px" icon="ios"></ion-spinner></span>
+				 <a href="/" ><img src="img/logo.png" style="max-width:200px" alt="Bliska po¿yczka"></a> 
+			</ion-nav-title>
+			<ion-content class="has-header ">
+		
+			<!-- map directive-->
+			<app-map style="height:{{mapHeight}}px;width:{{mapWidth}}px;"
+				center="basel"
+				zoom="12"
+				markers="whoiswhere"
+				loading="loading"
+				user="user"
+				settings="settings"
+				> 
+			</app-map>
+			</ion-content>
+			</ion-view>
+			<ion-footer-bar class="bar-dark">
+				
+				<div class="buttons">
+				<button class="button button-icon ion-more"  style="float:left;padding:0px!important;" ng-click="popover.show($event)">
+				</button>
+				</div>
+				<h1 class="title">&nbsp;</h1>
+				<div class="buttons">
+					<button class="button pull-right "  style="padding:0px!important;">{{version}}</button>
+				</div>
+				
+			</ion-footer-bar>

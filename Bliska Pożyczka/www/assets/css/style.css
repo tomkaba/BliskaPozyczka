@@ -1,0 +1,198 @@
+
+html, 
+body {
+    font: 13px Roboto, Helvetica, Verdana;
+    color: #333;
+}
+
+input {
+    border: none !important;
+    font: 100% Roboto, Helvetica, Verdana;
+}
+label[for] {
+    cursor: pointer;    
+}
+
+ul {
+    padding-left: 20px;
+}
+ul li {
+    margin-bottom: 10px;
+}
+
+.ui-icons:after {
+    width: 32px;
+    height: 32px;
+}
+.ui-icons.i:after {
+    background-position: 0 -32px;
+}
+.ui-icons.x:after {
+    background-position: -64px 0;
+}
+.ui-icons.hamburger:after {
+    background-position: -32px 0;
+}
+#index .ui-icons.hamburger:after {
+    background-position: 0 0;
+}
+
+.hidden {
+    display: none;
+}
+
+#wrapper { }
+#topper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #FFF;
+    
+    z-index: 1;
+}
+
+#index #topper {
+    background: transparent;
+    
+}
+
+#logotype {
+    display: block;
+    width: 212px;
+    height: 35px;
+    background: transparent url(../images/logotypes-sprite.png) no-repeat 0 -40px;
+    margin: 0 auto;
+}
+    #index #logotype {
+        background-position: 0 0;
+    }
+    
+#menu {
+    float: left;
+    margin: 2px 0;
+}
+
+#start {
+    width: 100%;
+    height: 100%;
+    background: #0F4641 url(../images/index-background.jpg) no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #FFF;
+}
+   
+#searchinput {
+                    font: 300 200% 'Roboto Condensed';
+                    letter-spacing: 1px;
+                    padding:25px!important;
+                    border-radius: 6px;
+					width:80%;
+					padding-right:60px!important;
+                }
+
+#searchsubmit {
+                   position: absolute;
+                    
+                    width: 48px;
+                    height: 48px;
+                    background: transparent url(../images/ui-sprite.png) no-repeat -64px -32px;
+                    -webkit-transition: none;
+                    -moz-transition: none;
+                    -o-transition: none;
+                    transition: none;
+                    padding: 0 !important;
+                    margin: 0px -60px !important;
+                }
+            
+               
+            
+               
+#left-side {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 80%;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: #EFEFEF;
+}
+#right-side {
+    height: 100vh;
+    box-sizing: border-box;
+	
+}
+    #right-side #header {
+        font-size: 145%;
+        background: #2AC0AF;
+        background: -webkit-linear-gradient(-90deg, #2AAEB3, #2AC0AF);
+        background: -o-linear-gradient(-90deg, #2AAEB3, #2AC0AF);
+        background: -moz-linear-gradient(-90deg, #2AAEB3, #2AC0AF);
+        background: linear-gradient(-90deg, #2AAEB3, #2AC0AF);
+        color: white;
+        font-weight: 300;
+        letter-spacing: 1px;
+        line-height: 35px;
+		text-align:center;
+		font-family: 'Roboto Condensed', Helvetica, Verdana;
+    }
+        
+
+#map-list {
+    overflow: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+    #map-list li {
+        border-bottom: 1px solid #E0E0E0;
+    }
+    #map-list li:last-of-type {
+        border: none;
+    }
+        #map-list li a {
+            position: relative;
+            display: block;
+            padding: 0px 0px 0px 30px;
+        }
+        #map-list li a:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            width: 18px;
+            height: 21px;
+            background: transparent url(../images/ui-sprite.png) no-repeat -103px -6px;
+            margin: 16px 1px;
+        }
+        #map-list li h2 {
+            font: 500 100% Roboto;
+            line-height: 1em;
+			font-size: 90%;
+        }
+		
+		
+        #map-list li small {
+            display: block;
+            font-size: 70%;
+            margin-bottom: 5px;
+        }
+        
+#map #left-side {
+    padding-top: 80px;
+}
+        
+#map-object {
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+
+.pointview_section_header {
+	background: #2AC0AF;
+	color:white;
+}

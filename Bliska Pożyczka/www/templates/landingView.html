@@ -1,0 +1,338 @@
+		<!-- Custom JS -->
+		<script src="landingres/js/urip-v2.js"></script>
+
+
+<ion-view> 
+			
+			<ion-content >
+			
+				<!--
+		==========================
+		== BEGIN HEADER CONTENT ==
+		==========================
+		-->
+	  	<header id="main-header" class="the-header the-origin-header" >
+
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 pull-right">
+						<a href="/" id="nav-menu-trigger" class="logo flip pull-right ">Przejdź do serwisu głównego ></a> 
+
+					</div> <!--/ .col-lg-6 -->
+					<div class="col-lg-6">
+
+						<a href="/" ><img src="img/logo.png" style="max-width:320px" alt="Bliska pożyczka"></a> 
+					</div> <!--/ .col-lg-6 -->
+					
+
+				</div> <!--/ .row -->
+			</div> <!--/ .container -->
+
+	  	</header>
+	  	<!--
+		=========================
+		==/ END HEADER CONTENT ==
+		=========================
+		-->
+
+
+		
+
+
+		<!--
+		========================
+		== BEGIN MAIN CONTENT ==
+		========================
+		-->
+		<main id="main-content" class="hero-form-layout" style="margin-bottom: 234px;">
+
+			<!--
+			========================
+			== BEGIN HERO SECTION ==
+			========================
+			-->
+			<section id="hero" class="breaking" data-stellar-background-ratio="0.5" data-stellar-vertical-offset="50">
+
+				<div class="hero-split-right"></div>
+
+				<div class="container" style="padding-top:50px" >
+
+					<div class="vertical-center-wrapper">
+						<div class="vertical-center-table">
+							<div class="vertical-center-content">
+
+								<!-- BEGIN Hero Content -->
+								<div class="hero-content row">
+									<div class="col-lg-6 col-md-6 col-sm-6 margin-top-40">
+
+										<h2 class="text-shadow-medium" data-sr="enter top over 1s and move 50px wait 0.3s">Wybierz punkt pożyczkowy</h2>
+										
+										<!-- <p class="lead zero-bottom text-shadow-xsmall" data-sr="enter top over 1s and move 50px wait 0.4s">Meet Urip Landing Page Template</p> -->
+
+
+										<div class="row">
+											<div class="col-lg-12">
+
+												
+												
+													<app-map style="height:{{mapHeight}}px;width:100%;"
+															center="basel"
+															zoom="12"
+															markers="whoiswhere"
+															loading="loading"
+															user="user"
+															settings="settings"
+															> 
+														</app-map>
+												
+
+											</div>
+										</div> <!--/ .row -->
+										<div class="row">
+										<form class="register-form margin-top-20 ">
+											
+											<div class="col-lg-8">
+												<input type="text" class="hero-input"  type="text"  placeholder="Podaj własną lokalizację (miasto + adres)" ng-change="search()" ng-model="data.search">
+												<div style="margin-top:-18px">
+												<ul>
+												<li ng-repeat="city in data.cities " ng-click="(data.search=city) && (data.cities=[])">{{city}}</li>
+												</ul>
+												</div>
+											</div>
+											<div class="col-lg-2 pull-right" >
+												<button type="submit" class="search-btn"  ng-click="manualLocalization()">Pokaż</button>
+											</div>
+											 
+											
+										</form>
+										</div>
+
+									</div> <!--/ .col-lg-6 -->
+
+									<div class="hero-form-wrapper col-lg-5 col-lg-offset-1 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1 centered margin-top-40" data-sr="over 1.25s">
+									
+										
+										
+										<h2 class="text-shadow-medium" data-sr="enter top over 1s and move 50px wait 0.3s">Szybki wniosek</h2>
+
+										<p class="zero-bottom">
+											
+										Wysokość pożyczki: <span id="loanvalue">{{settings.loanvalue}}</span> PLN 
+										
+										
+										<input type="range" min="{{settings.loanmin}}" max="10000" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
+	
+  
+										</p>
+										
+										<form class="register-form margin-top-32 margin-bot-5" id="register-form" method="post" >
+											<div class="row">
+
+												<div class="col-lg-6 col-md-6">
+													<div class="required-field">
+														<input name="heroFname" id="hero-fname" class="hero-input"  type="text" placeholder="Imię">
+													</div> <!--/ .required-field -->
+												</div>
+
+												<div class="col-lg-6 col-md-6">
+													<div class="required-field">
+													<input name="heroLname" id="hero-lname" class="hero-input"  type="text" placeholder="Nazwisko">
+													</div> <!--/ .required-field -->
+												</div>
+												
+												<div class="col-lg-6 col-md-6">
+														<input name="heroEmail" id="hero-email" class="hero-input"  type="email" placeholder="Adres e-mail">
+												</div>
+
+												<div class="col-lg-6 col-md-6">
+													<div class="required-field">
+														<input name="heroPhone" id="hero-phone" class="hero-input"  type="text" placeholder="Numer telefonu">
+													</div> <!--/ .required-field -->	
+												</div>
+													
+												<div class="col-lg-6 col-md-6">
+														<input name="heroPesel" id="hero-pesel" class="hero-input"  type="text" placeholder="Numer pesel">
+												</div>
+	
+												<div class="col-lg-12 col-md-12 ">
+												<div class="checkbox" style="text-align:left">	
+													<label><input type="checkbox" id="confirm_chk" name="confirm_chk" required value="1">
+							
+											 Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. nr 133, poz. 883) przez HappyProject Sp. z o.o. do celów marketingowych.
+													</label>
+												</div>
+												</div>
+												
+												
+												<div ng-if="pointId" style="text-align:left">
+													<div style="clear:both;padding:10px">
+													<h6 class="all-caps margin-bot-15">Wybrane miejsce podpisania umowy</h6>
+													<div class="col-lg-4 col-md-4">Punkt odbioru:</div><div class="col-lg-8 col-md-8">{{selectedPoint.name}}</div>
+													<div class="col-lg-4 col-md-4">Adres:</div><div class="col-lg-8 col-md-8">{{selectedPoint.city}}, {{selectedPoint.address}}</div>
+													<div class="col-lg-4 col-md-4">Odległość:</div><div class="col-lg-8 col-md-8">{{selectedPoint.distance}} km</div>
+													</div>
+													<span id="pointId" style="display:none">{{pointId}}</span>
+												</div>
+
+												<div class="col-lg-12 col-md-12">
+													
+													<button id="hero-submit" type="submit" class="submit-btn" onclick="submitForm()">Złóż wniosek</button>
+
+												</div>
+
+											
+										</form> <!--/ .register-form -->
+										
+							
+										
+
+										
+									
+									</div> <!--/ .hero-form-wrapper -->
+
+								</div> <!--/ .row -->
+								<!-- END Hero Content -->
+
+							</div> <!--/ .vertical-center-content -->
+						</div> <!--/ .vertical-center-table -->
+					</div> <!-- / .vertical-center-wrapper -->
+
+				</div> <!--/ .container -->
+
+			</section>
+			<!--
+			=======================
+			==/ END HERO SECTION ==
+			=======================
+			-->
+
+
+			
+
+		</main> <!--/ #main-content -->
+		<!--
+		=======================
+		==/ END MAIN CONTENT ==
+		=======================
+		-->
+		<!--
+		======================================
+		== BEGIN FORM NOTIFICATIONS CONTENT ==
+		======================================
+		-->
+		<!-- BEGIN Subscribe Form Alert/Notification -->
+		<div id="subscribe-error-notification" class="notif-box">
+
+			<span class="icon-bullhorn notif-icon"></span>
+			<p>Subscribe error, please review your email address.</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #error-notification -->
+
+		<div id="subscribe-success-notification" class="notif-box">
+
+			<span class="icon-checkmark notif-icon"></span>
+			<p>You're now subscribed, thank you!</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #success-notification -->
+		<!-- END Subscribe Form Alert/Notifications -->
+
+
+		<!-- BEGIN Contact Form Alert/Notifications -->
+		<div id="error-notification" class="notif-box">
+
+			<span class="icon-bullhorn notif-icon"></span>
+			<p>Zaznacz zgodę na przetwarzanie danych.</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #error-notification -->
+
+		<div id="success-notification" class="notif-box">
+
+			<span class="icon-checkmark notif-icon"></span>
+			<p>Your message has been sent. We'll get back to you soon!</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #success-notification -->
+		<!-- END Contact Form Alert/Notifications -->
+
+		<!-- BEGIN Hero Form Alert/Notifications -->
+		<div id="hero-error-notification" class="notif-box">
+
+			<span class="icon-bullhorn notif-icon"></span>
+			<p>Wypełnij wszystkie obowiązkowe dane (oznaczone czerwoną flagą)</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #error-notification -->
+		
+		<div id="hero-errorChk-notification" class="notif-box">
+
+			<span class="icon-bullhorn notif-icon"></span>
+			<p>Zaznacz zgodę na przetwarzanie danych.</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #error-notification -->
+		
+
+		<div id="hero-success-notification" class="notif-box">
+
+			<span class="icon-checkmark notif-icon"></span>
+			<p>Twój wniosek został złożony w wybranym punkcie pożyczkowym. Udaj się tam, aby dopełnić formalności i odebrać pożyczkę. Szczegółowe dane o adresie i godzinach działania punktu pożyczkowego zostały wysłane na Twój adres e-mail.</p>
+			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
+
+		</div> <!--/ #success-notification -->
+		<!-- END Hero Form Alert/Notifications -->
+		<!--
+		=====================================
+		==/ END FORM NOTIFICATIONS CONTENT ==
+		=====================================
+		-->
+			
+		<div id="waitmodal" class="tkmodal"><!-- Place at bottom of page --></div>		
+	
+			</ion-content>
+			</ion-view>
+			
+		
+
+		<!-- SmoothScroll -->
+		<script src="landingres/js/minified/SmoothScroll.min.js"></script>
+
+		<!-- Classie -->
+		<script src="landingres/js/minified/classie.min.js"></script>
+
+		<!-- One Page Nav -->
+		<script src="landingres/js/minified/jquery.nav.min.js"></script>
+
+		<!-- AjaxChimp -->
+		<script src="landingres/js/minified/jquery.ajaxchimp.min.js"></script>
+
+		<!-- Swipebox -->
+		<script src="landingres/js/minified/jquery.swipebox.min.js"></script>
+
+		<!-- Expandable Gallery on 2 Block Column -->
+		<script src="landingres/js/minified/expandableGallery.min.js"></script>
+
+		<!-- Counter Up -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+		<script src="landingres/js/minified/jquery.counterup.min.js"></script>
+
+		<!-- Quicksand JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+		<script src="landingres/js/minified/jquery-css-transform.min.js"></script>
+		<script src="landingres/js/minified/jquery-animate-css-rotate-scale.min.js"></script>
+		<script src="landingres/js/minified/jquery.quicksand.min.js"></script>
+
+		<!-- Headhesive -->
+		<script src="landingres/js/minified/headhesive.min.js"></script>
+
+		<!-- ScrollReveal -->
+		<script src="landingres/js/minified/scrollReveal.min.js"></script>
+
+		<!-- Stellar JS -->
+		<script src="landingres/js/jquery.stellar.js"></script>
+
+
+		<!-- Expandable Navigation Menu -->
+		<script src="landingres/js/minified/expandableNav.min.js"></script>			

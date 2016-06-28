@@ -1,0 +1,210 @@
+<script id="error-list.html" type="text/ng-template">  
+    <div class="error" ng-message="required">
+      <i class="ion-information-circled"></i> 
+      Pole obowiązkowe
+    </div>
+    <div class="error" ng-message="minlength">
+      <i class="ion-information-circled"></i> 
+      Tekst za krótki
+    </div>
+    <div class="error" ng-message="maxlength">
+      <i class="ion-information-circled"></i> 
+      Tekst za długi
+    </div>
+</script>   
+
+
+<ion-view title="Dodawanie punktu">
+  <ion-content >
+  <ion-scroll direction="y" style="height:{{screenformheight}}px">
+  <div class="card" >
+  <div class="item item-divider">
+  Jeśli Twojego punktu nie ma na mapie - możesz go łatwo dodać korzystając z poniższego formularza.<br/>
+  Koszt dodania punktu:<br/>
+  <ul>
+	  <li>Na 1 miesiąc - 59 zł brutto (48 zł netto + VAT)</li>
+	  <li>Na 3 miesiące - 149 zł brutto (121 zł netto + VAT) * oszczędzasz 15%</li>
+	  <li>Na 12 miesięcy - 528 zł brutto (429 zł netto + VAT) * oszczędzasz 25%</li>
+  </ul>
+  
+  W razie pytań, skontaktuj się z nami pisząc na adres kontakt@bliskapozyczka.pl lub telefonując 664 792 120.
+  </div>	
+  </div>
+  <form name="addPointForm" id="addPointForm" ng-submit="goPayment(abooption)" novalidate="" >
+	
+  <div class="card" >
+	<div class="item item-divider pointview_section_header">
+     Dane podstawowe:
+	</div>
+	
+	<label class="item item-input">
+		<span class="input-label">Nazwa punktu</span>
+		<input type="text" name="pointname" placeholder="nazwa punktu" ng-minlength="2" ng-maxlength="30" required>
+		<div class="error-container" ng-show="addPointForm.pointname.$error" ng-messages="addPointForm.pointname.$error">
+		<div ng-messages-include="error-list.html"></div>
+		</div>
+	 </label>
+	<label class="item item-input">
+		<span class="input-label">Nazwa sieci</span>
+		<input type="text" name="pointnetwork" placeholder="(opcjonalnie) nazwa sieci, do której należy" >
+	 </label>
+  </div>	  	
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane adresowe:
+	</div>
+	
+	<label class="item item-input">
+		<span class="input-label">Miasto</span>
+		<input type="text" name="city" placeholder="miasto, w którym się znajduje punkt" ng-minlength="2" ng-maxlength="30" required>
+		<div class="error-container" ng-show="addPointForm.city.$error" ng-messages="addPointForm.city.$error">
+		<div ng-messages-include="error-list.html"></div>
+		</div>
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Kod pocztowy</span>
+		<input type="text" name="postcode" placeholder="kod pocztowy miejsca, w którym się znajduje punkt">
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Ulica</span>
+		<input type="text" name="street" placeholder="adres punktu - ulica" ng-minlength="2" ng-maxlength="30" required>
+		<div class="error-container" ng-show="addPointForm.street.$error" ng-messages="addPointForm.street.$error">
+		<div ng-messages-include="error-list.html"></div>
+		</div>
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Numer</span>
+		<input type="text" name="number" placeholder="adres punktu - numer domu">
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Wskazówki lokalizacji</span>
+		<input type="text" name="locationinfo" placeholder="(opcjonalnie) dodatkowe wskazówki, np. wejście od..., II piętro, itp.">
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Godziny otwarcia w dni robocze</span>
+
+	</label>
+	<label class="item item-input" style="border:0px;">	
+		<span style="width:20px;margin-right:10px;">Od:</span><input type="time" name="open1from" value="09:00" formatted-time style="width:40px"><span style="width:20px;margin-left:20px;margin-right:10px;">Do:</span><input type="time" value="18:00" name="open1to" style="width:40px" formatted-time> 
+	</label>
+		
+	<li class="item item-toggle">
+	Otwarte w sobotę
+		<label class="toggle toggle-assertive">
+		   <input type="checkbox" ng-model="sobota">
+		   <div class="track">
+			 <div class="handle"></div>
+		   </div>
+		 </label>
+	</li>	
+	<label class="item item-input" ng-show="sobota" style="border:0px;">	
+		<span style="width:20px;margin-right:10px;">Od:</span><input type="time" name="open2from" value="09:00" formatted-time style="width:40px"><span style="width:20px;margin-left:20px;margin-right:10px;">Do:</span><input type="time" value="18:00" name="open2to" style="width:40px" formatted-time> 
+	</label>
+	
+	<li class="item item-toggle">
+	Otwarte w niedzielę
+		<label class="toggle toggle-assertive">
+		   <input type="checkbox" ng-model="niedziela">
+		   <div class="track">
+			 <div class="handle"></div>
+		   </div>
+		 </label>
+	</li>	
+	<label class="item item-input" ng-show="niedziela" style="border:0px;">	
+		<span style="width:20px;margin-right:10px;">Od:</span><input type="time" name="open3from" value="09:00" formatted-time style="width:40px"><span style="width:20px;margin-left:20px;margin-right:10px;">Do:</span><input type="time" value="18:00" name="open3to" style="width:40px" formatted-time> 
+	</label>
+		
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane kontaktowe:
+	</div>
+	<label class="item item-input">
+		<span class="input-label">Telefon</span>
+		<input type="text" name="phone" placeholder="numer telefonu do kontaktu" ng-minlength="2" ng-maxlength="30" required>
+		<div class="error-container" ng-show="addPointForm.phone.$error" ng-messages="addPointForm.phone.$error">
+		<div ng-messages-include="error-list.html"></div>
+		</div>
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Email</span>
+		<input type="text" name="email" placeholder="na ten e-mail będą przychodzić powiadomienia o wnioskach" ng-minlength="2" ng-maxlength="50" required>
+		<div class="error-container" ng-show="addPointForm.email.$error" ng-messages="addPointForm.email.$error">
+		<div ng-messages-include="error-list.html"></div>
+		</div>
+	</label>
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane o ofercie:
+	</div>
+	<div class="item range ">
+		<label class="item item-input">
+			<span class="input-label">Wysokość pożyczki</span>
+			Od: {{loanvaluefrom}} PLN <input type="range" min="100" max="1000" step="50" value="{{loanvaluefrom}}" name="loanvaluefrom" ng-model="loanvaluefrom">
+			<span style="margin-left:50px">Do: {{loanvalueto}} PLN</span> <input type="range" min="500" max="50000" step="500" value="{{loanvalueto}}" name="loanvalueto" ng-model="loanvalueto">
+			 
+		</label>
+	</div>
+	<div class="item range ">
+		<label class="item item-input">
+			<span class="input-label">Czas kontaktu od zgłoszenia</span>
+			{{contacttime}} minut <input type="range" min="15" max="360" step="15" value="{{contacttime}}" name="contacttime" ng-model="contacttime"> 
+		</label>
+	</div>
+	<div class="item range ">
+		<label class="item item-input">
+			<span class="input-label">Maksymalna wypłata w gotówce</span>
+			{{maxcash}} PLN <input type="range" min="100" max="50000" step="100" value="{{maxcash}}" name="maxcash" ng-model="maxcash"> 
+		</label>
+		<ion-checkbox ng-model="noloancash" style="border:0px!important">Brak wypłat gotówkowych</ion-checkbox>
+	</div>
+	<div class="item range">
+		<label class="item item-input">
+			<span class="input-label">Maksymalna wypłata bez zaświadczeń o zarobkach</span>
+			{{maxeasy}} PLN <input type="range" min="100" max="50000" step="100" value="{{maxeasy}}" name="maxeasy" ng-model="maxeasy"> 
+		</label>
+		<ion-checkbox ng-model="noloanoswiadczenie" style="border:0px!important">Brak wypłat bez zaświadczeń</ion-checkbox>
+	</div>
+  </div>
+  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane dodatkowe:
+	</div>
+	<div class="item item-text-wrap ">
+		<span class="input-label">Opis punktu i oferty</span>
+		<textarea name="description" rows=5 placeholder="(opcjonalnie) dodatkowe informacje jakie chcesz przedstawić o swoim punkcie lub ofercie" ></textarea>
+	</div>
+	<div class="item item-text-wrap ">
+		<span class="input-label">Zdjęcie punktu</span>
+		<label class="item item-input">
+			<span class="input-label">Link do zdjęcia:</span>
+			<input type="text" name="picurl" placeholder="podaj adres url, pod którym znajduje się zdjęcie">
+		</label>
+	</div>
+  </div> 	
+  
+<div class="card">
+	<div class="item item-divider pointview_section_header">
+     Wybierz abonament {{item}}:
+	</div>
+	<ion-list>
+		<ion-radio ng-repeat="i in abomode" ng-value="i.Id" ng-model="$parent.abooption" >{{i.Name}} - {{i.Price}} brutto <div ng-if="i.Save">(oszczędzasz {{i.Save}}%)</div></ion-radio>
+	</ion-list>
+  </div> 	
+  
+  <div class="card">
+	<button ng-disabled="!addPointForm.$valid" type="submit" form="addPointForm" class="button button-block button-assertive " style="font-size:150%;padding-left:4px;padding-right:4px;">Przejdź do płatności	</button>
+	</form>
+  </div>
+  </div>
+ </ion-scroll>
+</ion-content>
+</ion-view>
+<ion-footer-bar class="bar-dark">
+			<a href="#/t/map/home" nav-clear menu-close class="button button-small button-dark" >wróć do mapy</button>
+</ion-footer-bar>

@@ -1,0 +1,34 @@
+<ion-modal-view style="height:{{modalHeight}}px" id="index">
+			<ion-header-bar id="topper" style="border:0">
+			
+					<button class="button button-small " style="background-color:rgba(255, 255, 255, 0.25);padding:3px!important" ng-click="closeModal2()">Pomiń</button>
+			
+					<h1 class="title"><img src="img/logo.png" style="max-width:200px" alt="Bliska pożyczka"></h1>
+			</ion-header-bar>
+			
+			<section id="start">
+			<ion-content>
+			
+			  <div style="color:white;background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana;text-align:center;font-size:36px;margin-top:30px;">Gdzie jesteś?</div> 
+					<div style="clear:both"></div>
+ 
+			  <ion-list style="background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana;">
+			  <div class="item item-input-inset" style="background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana;">
+								<div class="item item-input-inset" style="background:transparent;border:0;width:100%"	>
+									
+									<input id="searchinput"  type="text" placeholder="{{item.placeholder}}" ng-change="search()" ng-model="data.search">
+									
+									<button id="searchsubmit" ng-disabled="!data.search" ng-click="manualLocalization()"></button>
+									
+									
+								  </div>		
+								  
+			   </div>
+			   <div class="list" style="background:transparent;color:white;border:0;width:100%">  
+										<li class="item" style="background:transparent;color:white;border:0;padding-bottom:0" ng-repeat="city in data.cities " ng-click="(data.search=city) && (data.cities=[])">{{city}}</li>
+								   </div>
+			</ion-list>
+			
+			</ion-content>
+			</section>
+</ion-modal-view>
