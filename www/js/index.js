@@ -1,5 +1,5 @@
 'use strict';
-var MapApp = angular.module('MapApp', ['ionic','ngMessages']);
+var MapApp = angular.module('MapApp', ['ionic']);
 
 /**
  * Routing table including associated controllers.
