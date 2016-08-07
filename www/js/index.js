@@ -549,7 +549,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		$scope.closeModal();
 		$scope.closeModal2();
 		$scope.closeModal3();
-		console.log('LOADING: SHOW');
+		
 		$ionicLoading.show({
 			templateUrl:"templates/localizationinprogress.html"
 		});
@@ -583,7 +583,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 			}
 		else
 		    {
-			console.log('LOADING: HIDE');
+			
 			$ionicLoading.hide();
 			
 			$ionicPopup.alert({title:'Nie ma takiego adresu',template:'Nie ma takiego miasta '+address+'... jest Lądek, Lądek Zdrój. W tej sytuacji startujemy bez geolokalizacji, możesz ustawić miasto korzystając z opcji w aplikacji.'});
@@ -602,6 +602,10 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 				};
 				
 				
+				$ionicLoading.show({
+					templateUrl:"templates/localizationinprogress.html"
+				});
+		
 				
 				
 				navigator.geolocation.getCurrentPosition(function(position) {
@@ -632,11 +636,11 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 							$scope.openModal3();
 							window.localStorage.setItem('BPinfomodal3',1);
 						}	
-					
+					$ionicLoading.hide();
 					
 				},function(e) { 
 					
-					
+						$ionicLoading.hide();
 						$scope.popupOn=true;
 						
 						
@@ -671,8 +675,6 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					
 				}, geo_options);
 				
-				console.log('LOADING HIDE');
-				$ionicLoading.hide();
 				
 				$scope.gotoLocation = function (lat, lon) {
 					
@@ -717,11 +719,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 	}
 		
 	function onDeviceReady() {
-		console.log('LOADING: show');	
-		$ionicLoading.show({
-			templateUrl:"templates/localizationinprogress.html"
-		});
-		
+	
 		$scope.centerMe();
 		$scope.loading = false;
 		
