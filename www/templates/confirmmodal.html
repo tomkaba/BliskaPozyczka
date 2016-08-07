@@ -1,20 +1,7 @@
-<script id="error-list.html" type="text/ng-template">  
-    <div class="error" ng-message="required">
-      <i class="ion-information-circled"></i> 
-      Pole obowiązkowe
-    </div>
-    <div class="error" ng-message="minlength">
-      <i class="ion-information-circled"></i> 
-      Tekst za krótki
-    </div>
-    <div class="error" ng-message="maxlength">
-      <i class="ion-information-circled"></i> 
-      Tekst za długi
-    </div>
-  </script>   
 
-<ion-modal-view style="height:{{modalHeight}}px">
-			
+
+<ion-modal-view style="width: 90%; height: 90%; top: 5%; left: 5%; right: 5%; bottom: 5%;">
+
 			<ion-header-bar>
 			
 			  <h1 class="title">Potwierdź dane</h1>
@@ -24,7 +11,7 @@
 			</ion-header-bar>
 			
 				<ion-content class="has-header padding" scroll="true">
-				
+<ion-scroll direction="y" style="height:{{modalContentHeight}}px">						
 				  <item>Wprowadź poniższe dane, aby przyspieszyć proces weryfikacji i wygenerowania umowy. Dane zostaną automatycznie przekazane do wybranego przez Ciebie punktu pożyczkowego i wprowadzone do umowy pożyczkowej. Wypełnienie poniższego pól opcjonalnych nie jest obowiązkowe, jednak znacznie skraca czas, po którym otrzymasz pieniądze.</item>
 				  
 				  <form ng-submit="orderLoan()" name="orderForm" id="orderForm" novalidate="" > 
@@ -34,38 +21,44 @@
 				  <label class="item item-input item-stacked-label" >
 					<span class="input-label">Wysokość pożyczki</span>
 					<div class="range">
-						{{settings.loanvalue}} PLN <input type="range" min="{{settings.loanmin}}" max="{{settings.loanmax}}" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
+						{{settings.loanvalue}} PLN <input type="range" min="100" max="10000" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
 					</div>
 				  </label>
 				  
 				  <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : orderForm.firstname.$invalid, 'no-errors' : orderForm.firstname.$valid}">
-					<span class="input-label">Imię</span>
+					<span class="input-label">Imię *</span>
 					<input type="text" placeholder="tu wpisz swoje imię" name="firstname" value="{{user.vorname}}" ng-model="user.vorname" ng-minlength="2" ng-maxlength="30" required>
-					<div class="error-container" ng-show="orderForm.firstname.$error" ng-messages="orderForm.firstname.$error">
-					<div ng-messages-include="error-list.html"></div>
-					</div>
+					<!--
+						<div class="error-container" ng-show="orderForm.firstname.$error" ng-messages="orderForm.firstname.$error">
+						<div ng-messages-include="error-list.html"></div>
+						</div>
+					-->
 				  </label>
 				  
 				  
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label">Nazwisko</span>
+				  <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : orderForm.surname.$invalid, 'no-errors' : orderForm.surname.$valid}">
+					<span class="input-label">Nazwisko *</span>
 					<input type="text" placeholder="tu wpisz swoje nazwisko" name="surname" value="{{user.name}}" ng-model="user.name" ng-minlength="2" ng-maxlength="30" required>
+					<!--
 					<div class="error-container" ng-show="orderForm.surname.$error" ng-messages="orderForm.surname.$error">
 					<div ng-messages-include="error-list.html"></div>
 					</div>
+					-->
 				  </label>
 				  
 				  
 				  <label class="item item-input item-stacked-label">
 					<span class="input-label">Email</span>
-					<input type="email" placeholder="twoj@email.pl" name="email" value="{{user.email}}">
+					<input type="email" placeholder="twoj@email.pl" ng-model="user.email" name="email" value="{{user.email}}">
 				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label">Telefon</span>
+				  <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : orderForm.tel.$invalid, 'no-errors' : orderForm.tel.$valid}">
+					<span class="input-label">Telefon *</span>
 					<input type="text" placeholder="tu wpisz numer telefonu do kontaktu" name="tel" value="{{user.phone}}" ng-model="user.phone" ng-minlength="2" ng-maxlength="30" required>
+					<!--
 					<div class="error-container" ng-show="orderForm.tel.$error" ng-messages="orderForm.tel.$error">
 					<div ng-messages-include="error-list.html"></div>
 					</div>
+					-->
 				  </label>
 				  
 				  
@@ -77,18 +70,20 @@
 					<span class="input-label">Dowód osobisty</span>
 					<input type="text" placeholder="tu wpisz serię i numer swojego dowodu" name="dowod" value="{{user.dowod}}" ng-model="user.dowod">
 				  </label>
-				  <li class="item item-checkbox">
+				  <li class="item item-checkbox" ng-class="{ 'has-errors' : orderForm.confirm_chk.$invalid, 'no-errors' : orderForm.confirm_chk.$valid}"> 
 											 <label class="checkbox">
 													<input type="checkbox" id="confirm_chk" name="confirm_chk" ng-model="confirm_chk" required value="1">
 											 </label>
-											 <span class="item-text-wrap" style="font-size:14px;">Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. nr 133, poz. 883) przez HappyProject Sp. z o.o. do celów marketingowych.</span>
+											 <span class="item-text-wrap" style="font-size:14px;">Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. nr 133, poz. 883) przez HappyProject Sp. z o.o. do celów marketingowych. *</span>
+											 <!--
 											<div class="error-container" ng-show="orderForm.confirm_chk.$error" ng-messages="orderForm.confirm_chk.$error">
 					<div ng-messages-include="error-list.html"></div>
-				  </div>
+					
+				  </div>						-->
 				  
 					</li>
 				  
-				  
+				   
 				</div>
 				
 					<ion-list >
@@ -135,6 +130,8 @@
 				</ion-list>
 				
 				</form>	
+				<div style="height:200px"></div>
+</ion-scroll>
 				</ion-content>
-				
+		
 </ion-modal-view>

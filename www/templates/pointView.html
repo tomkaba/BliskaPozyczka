@@ -1,5 +1,6 @@
-<ion-view title="Dane punktu: {{pointInfo.data.nazwa}}">
+<ion-view title="Dane punktu">
 <ion-content class="has-header padding">
+<ion-scroll direction="y" style="height:{{screenformheight}}px">
   <div class="card" >
 	<div class="item item-image" style="padding:15px">
 		<div ng-if="pointInfo.data.zdjecie">
@@ -90,9 +91,22 @@
 	</div>
 	
   </div>
+  
+</ion-scroll>  
 </ion-content>
 </ion-view>
-<ion-footer-bar class="bar-dark">
-			<a href="#/map/home" nav-clear menu-close class="button button-small button-dark" >wróć do mapy</button>
-			<a href="#/map/confirm/{{pointId}}" class="button button-small button-assertive pull-right" >Zamów pożyczkę</button>
+<ion-footer-bar class="bar-dark" >
+	<div ng-if="pointInfo.data.status!=5">
+			<h1 class="title"></h1>
+			<div class="buttons">
+			<a href="#!/pozyczka/confirm/{{pointId}}" class="button button-small button-assertive pull-right" style="float:right!important" >Zamów pożyczkę</a>
+			</div>
+	</div>
+	
+	<div ng-if="pointInfo.data.status==5" style="float:right!important">
+			<h1 class="title"></h1>
+			<div class="buttons">
+			<a href="#!/pozyczka/tmobile/{{pointId}}" class="button button-small button-assertive pull-right" >Zamów pożyczkę</a>
+			</div>
+	</div>
 </ion-footer-bar>

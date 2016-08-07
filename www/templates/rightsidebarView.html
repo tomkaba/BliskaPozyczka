@@ -1,4 +1,4 @@
-<div ng-show="pointId">
+<div ng-show="false">
 			<ion-header-bar class="bar-stable">
 						<h1 class="title">Złóż wniosek</h1>
 					</ion-header-bar>
@@ -13,7 +13,7 @@
 						  <label class="item item-input item-stacked-label">
 							<span class="input-label">Wysokość pożyczki</span>
 							<div class="range">
-								{{settings.loanvalue}} PLN <input type="range" min="{{settings.loanmin}}" max="{{settings.loanmax}}" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
+								{{settings.loanvalue}} PLN <input type="range" min="200" max="10000" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
 							</div>
 						  </label>
 						  
@@ -98,18 +98,32 @@
 							<button class="button button-block button-assertive " style="margin-top:0px;padding:0px!important" ng-click="orderLoan()">Zamów pożyczkę teraz</button>
 					</ion-footer-bar>	
 		</div>
-		<div ng-show="!pointId" id="right-side">
+		<div ng-show="true" id="right-side">
 			<ion-header-bar id="header" >
 						NAJBLIŻSZE PUNKTY
 			</ion-header-bar>
 			<ion-content>
 			<ion-scroll direction="y" style="height:{{formHeight}}px">
 						  <ion-list id="map-list">
-							<ion-item class="item-text-wrap" ng-repeat="item in nearPoints" ng-show="item.distance>0&&item.distance<100" ng-click="listPointClick({{item.id}})">
-									<li><a>
+						  
+							<ion-item class="item-text-wrap " ng-repeat="item in nearPoints" ng-show="item.distance>0&&item.distance<50" ng-click="listPointClick({{item.id}})">
+							
+							<li ><a >
+							<div ng-if="item.status<=4">
+								<i style="background:url(/img/pin_fines.png) no-repeat transparent"></i>
+							</div>
+							<div ng-if="item.status==5">
+								<i style="background:url(/img/pin_tmobile.png) no-repeat transparent"></i>
+							</div>
+							<div ng-if="item.status==6">
+								<i style="background:url(/img/pin_prometeusz.png) no-repeat transparent"></i>
+							</div>
+ 
 										<h2>{{item.name}}</h2><address><small>{{item.city}}, {{item.address}}</small>{{item.distance}}&nbsp;km</address>
 									</a></li>
+							
 							</ion-item>
+						  
 						  </ion-list>
 			</ion-scroll>			  
 			</ion-content>

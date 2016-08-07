@@ -16,12 +16,13 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6 pull-right">
+						
 						<a href="/" id="nav-menu-trigger" class="logo flip pull-right ">Przejdź do serwisu głównego ></a> 
 
 					</div> <!--/ .col-lg-6 -->
 					<div class="col-lg-6">
 
-						<a href="/" ><img src="img/logo.png" style="max-width:320px" alt="Bliska pożyczka"></a> 
+						<a href="/" ><img src="img/logo.png" style="max-width:300px" alt="Bliska pożyczka"></a> 
 					</div> <!--/ .col-lg-6 -->
 					
 
@@ -44,27 +45,37 @@
 		== BEGIN MAIN CONTENT ==
 		========================
 		-->
-		<main id="main-content" class="hero-form-layout" style="margin-bottom: 234px;">
+		<main id="main-content" class="hero-form-layout" >
 
 			<!--
 			========================
 			== BEGIN HERO SECTION ==
 			========================
 			-->
+			
+								
 			<section id="hero" class="breaking" data-stellar-background-ratio="0.5" data-stellar-vertical-offset="50">
 
 				<div class="hero-split-right"></div>
 
-				<div class="container" style="padding-top:50px" >
+				<div class="container" style="padding-top:30px" >
 
 					<div class="vertical-center-wrapper">
 						<div class="vertical-center-table">
-							<div class="vertical-center-content">
-
+							<div class="">
+								
 								<!-- BEGIN Hero Content -->
-								<div class="hero-content row">
+								<div class="hero-content">
 									<div class="col-lg-6 col-md-6 col-sm-6 margin-top-40">
-
+										<div class="row">
+										<h2><a class="logo flip pull-left" href="#" onclick="$('#infoimg').toggle('fade');" >&#128712; Jak to działa?</a></h2>
+										</div>
+										<div id="infoimg" style="display:none;width:{{infoWidth}}">
+											<div class="row">
+												<img onclick="$('#infoimg').hide('fade')" src="/img/popup_info.jpg" style="width:90%;margin-left:5%;margin-top:20;z-index:99999">
+											</div>
+										</div>
+										
 										<h2 class="text-shadow-medium" data-sr="enter top over 1s and move 50px wait 0.3s">Wybierz punkt pożyczkowy</h2>
 										
 										<!-- <p class="lead zero-bottom text-shadow-xsmall" data-sr="enter top over 1s and move 50px wait 0.4s">Meet Urip Landing Page Template</p> -->
@@ -102,101 +113,109 @@
 											<div class="col-lg-2 pull-right" >
 												<button type="submit" class="search-btn"  ng-click="manualLocalization()">Pokaż</button>
 											</div>
-											 
+											
+											
 											
 										</form>
 										</div>
 
 									</div> <!--/ .col-lg-6 -->
 
-									<div class="hero-form-wrapper col-lg-5 col-lg-offset-1 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1 centered margin-top-40" data-sr="over 1.25s">
+									
 									
 										
 										
-										<h2 class="text-shadow-medium" data-sr="enter top over 1s and move 50px wait 0.3s">Szybki wniosek</h2>
-
-										<p class="zero-bottom">
-											
-										Wysokość pożyczki: <span id="loanvalue">{{settings.loanvalue}}</span> PLN 
 										
-										
-										<input type="range" min="{{settings.loanmin}}" max="10000" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
-	
-  
-										</p>
-										
-										<form class="register-form margin-top-32 margin-bot-5" id="register-form" method="post" >
-											<div class="row">
-
-												<div class="col-lg-6 col-md-6">
-													<div class="required-field">
-														<input name="heroFname" id="hero-fname" class="hero-input"  type="text" placeholder="Imię">
-													</div> <!--/ .required-field -->
-												</div>
-
-												<div class="col-lg-6 col-md-6">
-													<div class="required-field">
-													<input name="heroLname" id="hero-lname" class="hero-input"  type="text" placeholder="Nazwisko">
-													</div> <!--/ .required-field -->
-												</div>
-												
-												<div class="col-lg-6 col-md-6">
-														<input name="heroEmail" id="hero-email" class="hero-input"  type="email" placeholder="Adres e-mail">
-												</div>
-
-												<div class="col-lg-6 col-md-6">
-													<div class="required-field">
-														<input name="heroPhone" id="hero-phone" class="hero-input"  type="text" placeholder="Numer telefonu">
-													</div> <!--/ .required-field -->	
-												</div>
-													
-												<div class="col-lg-6 col-md-6">
-														<input name="heroPesel" id="hero-pesel" class="hero-input"  type="text" placeholder="Numer pesel">
-												</div>
-	
-												<div class="col-lg-12 col-md-12 ">
-												<div class="checkbox" style="text-align:left">	
-													<label><input type="checkbox" id="confirm_chk" name="confirm_chk" required value="1">
-							
-											 Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. nr 133, poz. 883) przez HappyProject Sp. z o.o. do celów marketingowych.
-													</label>
-												</div>
-												</div>
-												
-												
-												<div ng-if="pointId" style="text-align:left">
-													<div style="clear:both;padding:10px">
-													<h6 class="all-caps margin-bot-15">Wybrane miejsce podpisania umowy</h6>
-													<div class="col-lg-4 col-md-4">Punkt odbioru:</div><div class="col-lg-8 col-md-8">{{selectedPoint.name}}</div>
-													<div class="col-lg-4 col-md-4">Adres:</div><div class="col-lg-8 col-md-8">{{selectedPoint.city}}, {{selectedPoint.address}}</div>
-													<div class="col-lg-4 col-md-4">Odległość:</div><div class="col-lg-8 col-md-8">{{selectedPoint.distance}} km</div>
+									<div id="wniosek">	<div class="hero-form-wrapper col-lg-5 col-lg-offset-1 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1 centered margin-top-40" data-sr="over 1.25s">
+									<h2 class="text-shadow-medium">Szybki wniosek</h2>
+											<p class="zero-bottom">
+												Wysokość pożyczki: <span id="loanvalue">{{settings.loanvalue}}</span> PLN 
+												<input type="range" min="{{settings.loanmin}}" max="10000" step="50" value="{{settings.loanvalue}}"  ng-model="settings.loanvalue"> 
+											</p>
+											<form class="register-form margin-top-32 margin-bot-5" id="register-form" method="post" >
+												<div class="row">
+													<div class="col-lg-6 col-md-6">
+														<div class="required-field">
+															<input name="name" id="name" class="hero-input"  type="text" placeholder="Imię">
+														</div> <!--/ .required-field -->
 													</div>
-													<span id="pointId" style="display:none">{{pointId}}</span>
-												</div>
 
-												<div class="col-lg-12 col-md-12">
+													<div class="col-lg-6 col-md-6">
+														<div class="required-field">
+														<input name="surname" id="surname" class="hero-input"  type="text" placeholder="Nazwisko">
+														</div> <!--/ .required-field -->
+													</div>
 													
-													<button id="hero-submit" type="submit" class="submit-btn" onclick="submitForm()">Złóż wniosek</button>
+													<div class="col-lg-6 col-md-6">
+															<input name="heroEmail" id="hero-email" class="hero-input"  type="email" placeholder="Adres e-mail">
+													</div>
 
-												</div>
+													<div class="col-lg-6 col-md-6">
+														<div class="required-field">
+															<input name="phone" id="phone" class="hero-input"  type="text" placeholder="Numer telefonu">
+														</div> <!--/ .required-field -->	
+													</div>
+														
+													<div class="col-lg-6 col-md-6">
+															<input name="heroPesel" id="hero-pesel" class="hero-input"  type="text" placeholder="Numer pesel">
+													</div>
+													<div class="col-lg-6 col-md-6">
+															<button id="submit-form" type="submit" class="submit-btn" onclick="submitForm()">Złóż wniosek</button>
+													</div>
+		
+													<div class="col-lg-12 col-md-12 ">
+													<div class="checkbox" style="text-align:left;margin-top:2px">	
+														<label style="font-size:10px"><input type="checkbox" id="confirm_chk" name="agreement_one" required value="1">
+															 Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. nr 133, poz. 883) przez HappyProject Sp. z o.o. do celów marketingowych.
+														</label>
+													</div>
+													</div>
 
+													<div ng-if="pointId" style="text-align:left">
+														<div style="clear:both;">
+														<h6 class="all-caps margin-bot-15;margin-left:5px;padding:5px!important">Wybrane miejsce podpisania umowy</h6>
+														<div class="col-lg-4 col-md-4">Punkt:</div><div class="col-lg-8 col-md-8">{{selectedPoint.name}}</div>
+														<div class="col-lg-4 col-md-4">Adres:</div><div class="col-lg-8 col-md-8">{{selectedPoint.city}}, {{selectedPoint.address}}</div>
+														<div class="col-lg-4 col-md-4">Odległość:</div><div class="col-lg-8 col-md-8">{{selectedPoint.distance}} km</div>
+														</div>
+														<span id="pointId" style="display:none">{{pointId}}</span>
+														<span id="pointStatus" style="display:none">{{pointStatus}}</span>
+													</div>
+											</form> <!--/ .register-form -->
 											
-										</form> <!--/ .register-form -->
+											
+											
+											<a class="pull-left"  href="#" onclick="javascript:window.open('/#/map/regulamin','Regulamin BliskaPożyczka.pl','width=600,height=400');" >Regulamin</a>
+										</div>
 										
-							
-										
-
-										
-									
 									</div> <!--/ .hero-form-wrapper -->
-
-								</div> <!--/ .row -->
+								</div> <!--/ .row -->	
 								<!-- END Hero Content -->
-
+									
+								<div id="wniosek_tmobile" style="display:none">
+								</div>
+								
+									
+								
 							</div> <!--/ .vertical-center-content -->
+							
+							<div class="col-lg-12">
+
+							<!-- BEGIN Attention Box -->
+							<div class="attention-box pull-left" style="text-align:left!important;padding:3px!important;margin-top:20px">
+																<small style="color:#333!important;text-align:left!important">Instytucje bankowe działają w oparciu o przepisy polskiego prawa określone w szczególności w Kodeksie cywilnym oraz Ustawie o kredycie konsumenckim.Reprezentowane firmy pożyczkowe stosują się do zapisów Ustawy o kredycie konsumenckim (Dz. U. z 2011 nr 126 poz. 715). Klientowi podczas wnioskowania o udzielenie takiej pożyczki udostępniany jest formularz informacyjny właściwy dla kredytu konsumenckiego. Pożyczki niebankowe udzielane są na podstawie Kodeksu Cywilnego (ustawa z dnia 23 kwietnia 1964 r. Kodeks cywilny, Dz. U. nr 16 poz. 93, z późn. zm.). Szczegółowe informacje o tym jak działają firmy pożyczkowe dostępne są na stronie <a href="http://knf.gov.pl">Komisji Nadzoru Finansowego</a>.<br>
+Administratorem danych osobowych jest HappyProject sp. z o.o. z siedzibą w Opolu przy ul. 1 Maja 94/1, 45-357 Opole, wpisaną do rejestru przedsiębiorców prowadzonego przez Sąd Rejonowy dla Wrocławia Fabrycznej Wydział VI Gospodarczy pod nr KRS 0000467464, NIP 8992744899, REGON 020114060, Kapitał zakładowy: 5 000,00 PLN opłacony w całości.
+Serwis ogłoszeniowy bliskapozyczka.pl nie ponosi odpowiedzialności za treści emitowane przez ogłoszeniodawców. Czas i odbiór ewentualnej umowy zależy od indywidualnej oceny zdolności kredytowej. Wiążące warunki udzielenia kredytu zostaną przedstawione przez właściwą instytucję finansową oraz Bank w trakcie zawierania umowy. </small>
+							</div> <!--/ .attention-box -->
+							<!--/ END Attention Box -->
+
+						</div>
+							
 						</div> <!--/ .vertical-center-table -->
 					</div> <!-- / .vertical-center-wrapper -->
-
+					
+					
+									
 				</div> <!--/ .container -->
 
 			</section>
@@ -207,7 +226,7 @@
 			-->
 
 
-			
+		
 
 		</main> <!--/ #main-content -->
 		<!--
@@ -221,22 +240,23 @@
 		======================================
 		-->
 		<!-- BEGIN Subscribe Form Alert/Notification -->
+		
+		
 		<div id="subscribe-error-notification" class="notif-box">
 
 			<span class="icon-bullhorn notif-icon"></span>
-			<p>Subscribe error, please review your email address.</p>
+			<p>Wskaż na mapie preferowany punkt pożyczkowy.</p>
 			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
 
-		</div> <!--/ #error-notification -->
-
+		</div> 
+		<!--
 		<div id="subscribe-success-notification" class="notif-box">
 
 			<span class="icon-checkmark notif-icon"></span>
 			<p>You're now subscribed, thank you!</p>
 			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
 
-		</div> <!--/ #success-notification -->
-		<!-- END Subscribe Form Alert/Notifications -->
+		</div> -->
 
 
 		<!-- BEGIN Contact Form Alert/Notifications -->
@@ -247,14 +267,16 @@
 			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
 
 		</div> <!--/ #error-notification -->
-
+		<!--
 		<div id="success-notification" class="notif-box">
 
 			<span class="icon-checkmark notif-icon"></span>
 			<p>Your message has been sent. We'll get back to you soon!</p>
 			<a class="notification-close" onclick="$(this).parent('div').fadeOut(200);"><span class="icon-cross2"></span></a>
 
-		</div> <!--/ #success-notification -->
+		</div> 
+		-->
+		<!--/ #success-notification -->
 		<!-- END Contact Form Alert/Notifications -->
 
 		<!-- BEGIN Hero Form Alert/Notifications -->

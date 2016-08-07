@@ -4,37 +4,46 @@ var MapApp = angular.module('MapApp', ['ionic']);
 /**
  * Routing table including associated controllers.
  */
-MapApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
+MapApp.config([  
+    '$locationProvider',
+    function($locationProvider) {
+        $locationProvider.hashPrefix('!');
+    }
+]);
+
+MapApp.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+	
+	
 	$stateProvider
 		.state('menu', {
-			url: "/map", 
+			url: "/pozyczka", 
 			abstract: true, 
 			templateUrl: "templates/menu.html",
 			})
-		.state('landing', {
-			url: "/l", 
-			abstract: true, 
-			templateUrl: "templates/landing.html",
-			})
-		.state('landing.welcome', {
-			url: '/welcome', 
-			cache: true,
-			views: {'menuContent': {templateUrl: 'templates/landingView.html', controller: 'LandingCtrl',resolve: {
-				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
-				} } }
-			 })	
-				
-			
-	
 		.state('menu.home', {
 			url: '/home', 
 			cache: true,
-			views: {'menuContent': {templateUrl: 'templates/gpsView.html', controller: 'GpsCtrl',resolve: {
-				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
+			views: {'menuContent': {templateUrl: 'templates/gpsView.html', controller: 'GpsCtrl',resolve: { payConfirmModal: function () { return false; }, 
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  } , citySlug: function() {	return '';  } 
 				} }, 'rightPanel': {templateUrl: 'templates/rightsidebarView.html', controller: 'RightPanelCtrl',resolve: {
 				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
 				} } }
 			 })
+		.state('menu.city', {
+			url: '/:citySlug/pozyczki', 
+			cache: true,
+			controller: function($stateParams){
+				$stateParams.citySlug  
+			}, 
+			views: {'menuContent': {templateUrl: 'templates/gpsView.html', controller: 'GpsCtrl',resolve: { payConfirmModal: function () { return false; }, 
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  } , citySlug: ['$stateParams', function($stateParams){
+					return $stateParams.citySlug;
+				}]   
+				} }, 'rightPanel': {templateUrl: 'templates/rightsidebarView.html', controller: 'RightPanelCtrl',resolve: {
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }   
+				} } }
+			 })	 
 		.state('menu.settings', {
 			url: '/settings', 
 			views: {'menuContent': {templateUrl: 'templates/settingsView.html', controller: 'SettingsCtrl',resolve: {
@@ -60,19 +69,32 @@ MapApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 				$stateParams.pointId  
 			}, 
 			cache: false,
-			views: {'menuContent': {templateUrl: 'templates/confirmView.html', cache:false, controller: 'ConfirmCtrl',resolve: {  
+			views: {'menuContent': {templateUrl: 'templates/confirmView.html?v=970', cache:false, controller: 'ConfirmCtrl',resolve: {  
 				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata(); } , pointId: ['$stateParams', function($stateParams){
 					return $stateParams.pointId;
 				}]
 				} }  } 
 			})
+		.state('menu.tmobile', {
+			url: '/tmobile/:pointId',
+			controller: function($stateParams){
+				$stateParams.pointId  
+			}, 
+			cache: false,
+			views: {'menuContent': {templateUrl: 'templates/tmobileView.html', cache:false, controller: 'ConfirmCtrl',resolve: {  
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata(); } , pointId: ['$stateParams', function($stateParams){
+					return $stateParams.pointId;
+				}]
+				} }  } 
+			})
+	
 		.state('menu.point', {
 			url: '/p/:pointSlug/:pointId',
 			controller: function($stateParams){
 				$stateParams.pointId  
 			}, 
 			cache: false,
-			views: {'menuContent': {templateUrl: 'templates/pointView.html', cache:false, controller: 'PointCtrl', resolve: {  
+			views: {'menuContent': {templateUrl: 'templates/pointView.html?v=970', cache:false, controller: 'PointCtrl', resolve: {  
 				 pointId: ['$stateParams', function($stateParams){
 					return $stateParams.pointId;
 				}]
@@ -81,13 +103,30 @@ MapApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 		.state('menu.addpoint', {
 			url: '/addpoint', 
 			views: {'menuContent': {templateUrl: 'templates/addPointView.html', controller: 'AddPointCtrl',resolve: {
-				userdata: function(UserdataService) {	return UserdataService.getUserdata(); }  
-				} } },
+				userdata: function(UserdataService) {	return UserdataService.getUserdata(); } } }, 'rightPanel': {templateUrl: 'templates/rightaddpointView.html' }
+				  },
+			})	
+		
+		.state('menu.payFinal', {
+			url: '/payFinal', 
+			cache: true,
+			views: {'menuContent': {templateUrl: 'templates/gpsView.html', controller: 'GpsCtrl',resolve: { payConfirmModal: function () { return true; } ,
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
+				} }, 'rightPanel': {templateUrl: 'templates/rightsidebarView.html', controller: 'RightPanelCtrl',resolve: {
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
+				} } }
+			 }) 
+		
+		.state('menu.regulamin', {
+			url: '/regulamin', 
+			views: {'menuContent': {templateUrl: 'templates/regulaminView.html', controller: 'regulaminCtrl' }}
 			})	
 		
 
 	// if none of the above states are matched, use this as the fallback
-	$urlRouterProvider.otherwise('/map/home');
+	$urlRouterProvider.otherwise('/pozyczka/home');
+	$ionicConfigProvider.views.maxCache(5);
+	$ionicConfigProvider.backButton.text('Wróć');
 }]);
 
 
@@ -108,7 +147,12 @@ MapApp.controller('MainCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDe
 	
 });
 
-MapApp.controller('AddPointCtrl', 	function($scope) {
+MapApp.controller('regulaminCtrl', 	function($scope) {
+	$scope.screenformheight=window.innerHeight-44;
+});
+
+
+MapApp.controller('AddPointCtrl', 	function($scope,$http) {
 	$scope.screenformheight=window.innerHeight-44;
 	$scope.mode=3;
 	$scope.sobota=false;
@@ -120,12 +164,12 @@ MapApp.controller('AddPointCtrl', 	function($scope) {
 	$scope.maxeasy=1000;
 	
 	$scope.abomode = [
-    { Id: 1, Name: "1 miesiąc", Price: "59 zł" },
+    { Id: 1, Name: "1 miesiąc", Price: "59 zł", Promo: 'Promocja "Satysfakcja gwarantowana"', PromoPrice: "19,99 zł" },
     { Id: 2, Name: "3 miesiące", Price: "149 zł", Save: "15" },
     { Id: 3, Name: "12 miesięcy", Price: "528 zł", Save: "25" }
 	];
 	
-	$scope.abooption=2;
+	$scope.abooption=1;
 
 	
 	$scope.goPayment = function(f) {
@@ -136,49 +180,54 @@ MapApp.controller('AddPointCtrl', 	function($scope) {
 
 	var newpointdata =
 						{
-							name:encodeURI($("[name='pointname']").val()),
-							network:encodeURI($("[name='pointnetwork']").val()),
-							city:encodeURI($("[name='city']").val()),
-							postcode:encodeURI($("[name='postcode']").val()),
-							street:encodeURI($("[name='street']").val()),
-							number:encodeURI($("[name='number']").val()),
-							locationinfo:encodeURI($("[name='locationinfo']").val()),
-							open1from:encodeURI($("[name='open1from']").val()),
-							open1to:encodeURI($("[name='open1to']").val()),
-							open2from:encodeURI($("[name='open2from']").val()),
-							open2to:encodeURI($("[name='open2to']").val()),
-							open3from:encodeURI($("[name='open3from']").val()),
-							open3to:encodeURI($("[name='open3to']").val()),
-							phone:encodeURI($("[name='phone']").val()),
-							email:encodeURI($("[name='email']").val()),
-							loanvaluefrom:encodeURI($("[name='loanvaluefrom']").val()),
-							loanvalueto:encodeURI($("[name='loanvalueto']").val()),
-							contacttime:encodeURI($("[name='contacttime']").val()),
-							maxcash:encodeURI($("[name='maxcash']").val()),
-							maxeasy:encodeURI($("[name='maxeasy']").val()),
-							description:encodeURI($("[name='description']").val()),
-							picurl:encodeURI($("[name='picurl']").val()),
-							abomode:encodeURI(f),
+							name:($("[name='pointname']").val()),
+							network:($("[name='pointnetwork']").val()),
+							city:($("[name='city']").val()),
+							postcode:($("[name='postcode']").val()),
+							street:($("[name='street']").val()),
+							number:($("[name='number']").val()),
+							locationinfo:($("[name='locationinfo']").val()),
+							open1from:($("[name='open1from']").val()),
+							open1to:($("[name='open1to']").val()),
+							open2from:($("[name='open2from']").val()),
+							open2to:($("[name='open2to']").val()),
+							open3from:($("[name='open3from']").val()),
+							open3to:($("[name='open3to']").val()),
+							phone:($("[name='phone']").val()),
+							email:($("[name='email']").val()),
+							loanvaluefrom:($("[name='loanvaluefrom']").val()),
+							loanvalueto:($("[name='loanvalueto']").val()),
+							contacttime:($("[name='contacttime']").val()),
+							maxcash:($("[name='maxcash']").val()),
+							maxeasy:($("[name='maxeasy']").val()),
+							description:($("[name='description']").val()),
+							picurl:($("[name='picurl']").val()),
+							abomode:(f),
+							nip:($("[name='invoice_nip']").val()),
+							nazwafaktura:($("[name='invoice_company']").val()),
+							adresfaktura:($("[name='invoice_address']").val()),
 						};
 				
 				var url = "https://bliskapozyczka.pl/newpointpreregister.php";
 				
-				var request= array2json(newpointdata);
-				console.log(newpointdata);
+				
+				
+				
+				var jsonString = JSON.stringify(newpointdata);
+				console.log(jsonString);
+				
+				
+				
 				jQuery.support.cors = true;
 				$.ajax({
 											url: url,
-											async: false,
-											contentType: "text/html",
-											data: { 'order': request },
-											
+											type: "POST",
+											data: {data : jsonString},
+											cache: false,
 											success: function () {
 												true;
-											},
-											error:  function(jqXHR, textStatus, ex) {
-												alert('Błąd sieci!');
-												window.location.hash="#/map/home";
 											}
+											
 										});
 										
 	
@@ -225,8 +274,8 @@ MapApp.controller('RightPanelCtrl', 	function($scope, $ionicPlatform, $ionicPopu
 							phone:encodeURI($("[name='tel']").val()),
 							dowod:encodeURI($("[name='dowod']").val()),
 							pesel:encodeURI($("[name='pesel']").val()),
-							loanvalue:window.localStorage.getItem('loanvalue'),
-							//punkt:$scope.pointId
+							loanvalue:$scope.settings.loanvalue,
+							punkt:$scope.pointId,
 							waittime:window.localStorage.getItem('waittime')
 						};
 				
@@ -244,11 +293,11 @@ MapApp.controller('RightPanelCtrl', 	function($scope, $ionicPlatform, $ionicPopu
 											
 											success: function () {
 												$ionicPopup.alert({title:'Gratulacje!',template:'Twój wniosek został złożony w wybranym punkcie pożyczkowym. Udaj się tam, aby dopełnić formalności i odebrać pożyczkę. Szczegółowe dane o adresie i godzinach działania punktu pożyczkowego zostały wysłane na Twój adres e-mail.'});
-												//window.location.hash="#/map/ordered";
+												//window.location.hash="#!/pozyczka/ordered";
 											},
 											error:  function(jqXHR, textStatus, ex) {
 												alert('Błąd sieci!');
-												window.location.hash="#/map/home";
+												window.location.hash="#!/pozyczka/home";
 											}
 										});
 										
@@ -264,7 +313,7 @@ MapApp.controller('RightPanelCtrl', 	function($scope, $ionicPlatform, $ionicPopu
 	}
 	
 	$scope.addPoint = function () {
-		window.location.hash="#/map/addpoint";
+		window.location.hash="#!/pozyczka/addpoint";
 	}
 	
 	$scope.$on('PIN_CLICK', function(response,data) {
@@ -272,10 +321,19 @@ MapApp.controller('RightPanelCtrl', 	function($scope, $ionicPlatform, $ionicPopu
         $scope.pointId=data;
 		if(!$ionicSideMenuDelegate.isOpenRight())
 		{
-			console.log('toggle');
-			$ionicSideMenuDelegate.toggleRight();
+			/*if(window.innerWidth>600)
+				$ionicSideMenuDelegate.toggleRight();
+			*/
 		}
-		$scope.$apply();
+		else
+		{
+			if(window.innerWidth<=600)
+			{
+				$ionicSideMenuDelegate.toggleRight();
+			}
+		}
+		
+		//$scope.$apply();
 	})
 	
 	$scope.$on('PIN_CLOSE', function(response,data) {
@@ -304,7 +362,9 @@ MapApp.factory('whoiswhereService', function($http) {
   return {
     all: function() {
       // Return promise (async callback)
-      return $http.get("https://bliskapozyczka.pl/p.php");
+	  var url="https://bliskapozyczka.pl/p.php?rand="+Math.floor((Math.random() * 100) + 1);
+	  //console.log(url);
+      return $http.get(url);
     }
   };
 })
@@ -331,206 +391,27 @@ MapApp.factory('FlightDataService', function($q, $timeout,$rootScope) {
     }
 })
 
-MapApp.controller('LandingCtrl', 	function($scope, $ionicPlatform, $location,$rootScope,userdata,settings,whoiswhereService) {
-	$scope.version='v. 0.';
-	
-	$scope.modalHeight=$scope.mapHeight * 0.9;
-	
-	$scope.modalContentHeight = $scope.modalHeight-88;
-	
-	$scope.mapWidth= window.innerWidth/2*0.9;
-	$scope.mapHeight= $scope.mapWidth*0.8;
-	$scope.basel = { lat: 52.107885, lon: 17.038538 };  //domyślny środek mapy
-	$scope.user = userdata;	
-	$scope.settings= settings;
-	
-	console.log(settings);
-	$scope.data = { "cities" : [], "search" : window.localStorage.getItem('defaultManualAddress') };
 
-    $scope.search = function() {
-
-    	FlightDataService.searchAirlines($scope.data.search).then(
-    		function(matches) {
-    			$scope.data.cities = matches;
-    		}
-    	)
-    }
-
-	$scope.manualLocalization = function() {
-		
-		
-		var geocoder = new google.maps.Geocoder();
-		var address = $scope.data.search;
-		$scope.closeModal();
-		$scope.closeModal2();
-		
-		geocoder.geocode( { 'address': address}, function(results, status) {
-
-		if (status == google.maps.GeocoderStatus.OK) {
-		
-				window.localStorage.setItem('defaultManualAddress',address);
-				
-				var latitude = results[0].geometry.location.lat();
-				var longitude = results[0].geometry.location.lng();
-				
-				$scope.basel.lat=latitude;
-				$scope.basel.lon=longitude;
-				$scope.gotoLocation($scope.basel.lat, $scope.basel.lon); 
-				var i;
-				for(i=1;i<$scope.whoiswhere.length;i++)
-				{
-					$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
-				}
-					
-				$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-				$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);			
-			}
-		else
-		    {
-			
-			$ionicPopup.alert({title:'Nie ma takiego adresu',template:'Nie ma takiego miasta '+address+'... jest Lądek, Lądek Zdrój. W tej sytuacji startujemy bez geolokalizacji, możesz ustawić miasto korzystając z opcji w aplikacji.'});
-
-			}
-		}); 
-	}
-
-	$scope.centerMe = function () {
-	
-				
-				var geo_options = {
-					  enableHighAccuracy: true, 
-					  maximumAge        : 30000, 
-					  timeout           : 27000
-				};
-				
-				
-				navigator.geolocation.getCurrentPosition(function(position) {
-					$scope.position=position;
-					var c = position.coords;
-					console.log('Current position:'+c.latitude+','+c.longitude);
-					$scope.gotoLocation(c.latitude, c.longitude);
-					
-					var i;
-					for(i=1;i<$scope.whoiswhere.length;i++)
-					{
-						$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm(c.latitude,c.longitude,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
-					}
-					
-					$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-					//console.log($scope.whoiswhere);
-					
-					$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
-					
-				},function(e) { 
-					
-					if(!$scope.popupOn)
-					{
-						$scope.popupOn=true;
-						//$scope.showConfirm();
-						$scope.openModal();  
-					}
-					
-					console.log("Error retrieving position " + e.code + " " + e.message); 
-					$scope.gotoLocation($scope.basel.lat, $scope.basel.lon); 
-					var i;
-					for(i=1;i<$scope.whoiswhere.length;i++)
-					{
-						$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
-					}
-					
-					$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-					$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
-					
-				}, geo_options);
-				
-				$scope.gotoLocation = function (lat, lon) {
-					
-					if ($scope.lat != lat || $scope.lon != lon) 
-					{
-						$scope.basel = { lat: lat, lon: lon };
-						//console.log("BASEL");
-						//console.log($scope.basel);
-						
-					}
-				};	
-	};
-		
-	
-	
-	
-	$scope.centerMe();
-	$scope.loading = false;
-	
-	
-	if (typeof(Number.prototype.toRadians) === "undefined") {
-		Number.prototype.toRadians = function() {
-			return this * Math.PI / 180;
-		}
-	}
-	
-	function deg2rad(deg) {
-		return deg * (Math.PI/180)
-	}
-	
-	function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-	  var R = 6371; // Radius of the earth in km
-	  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-	  var dLon = deg2rad(lon2-lon1); 
-	  var a = 
-		Math.sin(dLat/2) * Math.sin(dLat/2) +
-		Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-		Math.sin(dLon/2) * Math.sin(dLon/2)
-		; 
-	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-	  var d = R * c; // Distance in km
-	  return Math.round(d).toFixed(1);
-	}
-	
-	whoiswhereService.all().then(function(p) {
-
-		var i;
-		var w;
-		var cities=[];
-		$scope.whoiswhere = [ 
-			{ id: 1, 'name': 'Ja', 'type':'me', 'lat':  $scope.basel.lat, 'lon' : $scope.basel.lon}
-			];
-		for(i=0;i<p.data.length;i++)
-		{
-						
-			if(p.data[i].pic=='') p.data[i].pic="/img/bank.jpg";				
-			
-			w = { id: p.data[i].id, 'name': p.data[i].name, 'siec': p.data[i].siec, 'picture': p.data[i].pic, 'type':'point', 'priority':p.data[i].priority, 'city':p.data[i].city, 'address':p.data[i].address, 'tel':p.data[i].tel, 'lat': p.data[i].lat, 'lon' : p.data[i].lon, 'open':p.data[i].open, 'maxloan':p.data[i].maxloan, 'waittime':p.data[i].waittime, 'distance' : getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat(p.data[i].lat),parseFloat(p.data[i].lon))};
-						//console.log(w);
-			$scope.whoiswhere.push(w);
-			
-			if(cities.indexOf(p.data[i].city)==-1)
-				{
-					cities.push(p.data[i].city);
-				}
-		}
-		
-		$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-		
-		
-		$rootScope.cities=cities;
-		$scope.centerMe();
-	});
-	
-})
  
-MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService) {
+MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService, payConfirmModal,citySlug) {
 
-	$scope.version='v. 0.900';
+	$scope.version='v. 0.970';
 	$scope.mapHeight= window.innerHeight-88;
 	$scope.modalHeight=$scope.mapHeight * 0.9;
 	
-	$scope.modalContentHeight = $scope.modalHeight-88;
+	if (typeof(citySlug)!=='undefined' && citySlug.length>0) $scope.citySlug=citySlug;
+	
+	$scope.modalContentHeight = $scope.modalHeight-44;
 	
 	$scope.mapWidth= window.innerWidth;
 	$scope.basel = { lat: 52.107885, lon: 17.038538 };  //domyślny środek mapy
 	$scope.user = userdata;	
 	$scope.settings= settings;
 	
+	$scope.payConfirmModal=payConfirmModal;
+	
+	$scope.showHowTo=(window.innerWidth>600);
+	$scope.showCert=(window.innerWidth>750);
 		
 	$scope.popupOn=false;
 	
@@ -551,6 +432,9 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		return $scope.shownGroup === group;
     };
 	
+	$scope.regulamin = function () {
+		window.location.hash="#!/pozyczka/regulamin";
+	}
 	$ionicModal.fromTemplateUrl('templates/modal.html?v=903', {
 		scope: $scope,
 		animation: 'slide-in-up'
@@ -596,9 +480,30 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		$scope.modal2.remove();
 	  });
 	  
-	 
 	
-	$ionicPopover.fromTemplateUrl('templates/popover.html', {
+	$ionicModal.fromTemplateUrl('templates/info.html?v=1', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	  }).then(function(modal) {
+		$scope.modal3 = modal;
+		console.log('modal3 setup');
+						
+	  });
+	  
+	  $scope.openModal3 = function() {
+		if (typeof($scope.popover)!=='undefined') $scope.closePopover();
+		$scope.modal3.show();
+	  };
+	  $scope.closeModal3 = function() {
+		$scope.modal3.hide();
+	  };
+	  // Cleanup the modal when we're done with it!
+	  $scope.$on('$destroy', function() {
+		$scope.modal3.remove();
+	  });
+ 
+	
+	$ionicPopover.fromTemplateUrl('templates/popover.html?v=2', {
 		scope: $scope,
 	}).then(function(popover) {
 		$scope.popover = popover;
@@ -640,8 +545,10 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		
 		var geocoder = new google.maps.Geocoder();
 		var address = $scope.data.search;
+		
 		$scope.closeModal();
 		$scope.closeModal2();
+		$scope.closeModal3();
 		
 		geocoder.geocode( { 'address': address}, function(results, status) {
 
@@ -659,6 +566,11 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 				for(i=1;i<$scope.whoiswhere.length;i++)
 				{
 					$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
+					if(parseFloat($scope.whoiswhere[i].lat)>0 && parseFloat($scope.whoiswhere[i].lon)>0 && $scope.whoiswhere[i].distance<0.1) 
+						{
+							$scope.whoiswhere[i].distance=0.1;
+						}
+					
 				}
 					
 				$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
@@ -692,6 +604,11 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					for(i=1;i<$scope.whoiswhere.length;i++)
 					{
 						$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm(c.latitude,c.longitude,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
+						
+						if(parseFloat($scope.whoiswhere[i].lat)>0 && parseFloat($scope.whoiswhere[i].lon)>0 && $scope.whoiswhere[i].distance<0.1) 
+						{
+							$scope.whoiswhere[i].distance=0.1;
+						}
 					}
 					
 					$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
@@ -699,14 +616,31 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					
 					$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
 					
+					var howitworks= window.localStorage.getItem('BPinfomodal3');
+						if (!howitworks && window.innerWidth>600)  
+						{
+							$scope.openModal3();
+							window.localStorage.setItem('BPinfomodal3',1);
+						}	
+					
 					
 				},function(e) { 
 					
 					
 						$scope.popupOn=true;
+						
+						
 						//$scope.showConfirm();
-						$scope.openModal();  
+						if(!$scope.payConfirmModal)
+							$scope.openModal();  
 					
+						var howitworks= window.localStorage.getItem('BPinfomodal3');
+						console.log(howitworks);
+						if (!howitworks && window.innerWidth>600)  
+						{
+							$scope.openModal3();
+							window.localStorage.setItem('BPinfomodal3',1);
+						}	
 					
 					console.log("Error retrieving position " + e.code + " " + e.message); 
 					$scope.gotoLocation($scope.basel.lat, $scope.basel.lon); 
@@ -714,6 +648,9 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					for(i=1;i<$scope.whoiswhere.length;i++)
 					{
 						$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
+						
+						if(parseFloat($scope.whoiswhere[i].lat)>0 && parseFloat($scope.whoiswhere[i].lon)>0 && $scope.whoiswhere[i].distance<0.1) 
+							$scope.whoiswhere[i].distance=0.1;
 					}
 					
 					$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
@@ -734,11 +671,23 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 	};
 		
 	
-	
-	
 	$scope.centerMe();
 	$scope.loading = false;
 	
+	if($scope.payConfirmModal)
+	{
+		$ionicPopup.show({
+													template: 'Twój Punkt został zgłoszony do dodania. W ciągu 24 godzin dokonamy weryfikacji zgłoszenia i zamieścimy punkt na mapie. O zamieszczeniu punktu powiadomimy Cię pocztą elektroniczną.',
+													title: 'Gratulacje!',
+													subTitle: 'Punkt został zgłoszony',
+													buttons: [
+													  { text: 'OK',
+														type: 'button-positive' ,
+													  }
+													],
+													
+												  });
+	}
 	
 	if (typeof(Number.prototype.toRadians) === "undefined") {
 		Number.prototype.toRadians = function() {
@@ -761,7 +710,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		; 
 	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 	  var d = R * c; // Distance in km
-	  return Math.round(d).toFixed(1);
+	  return d.toFixed(1);
 	}
 	
 	whoiswhereService.all().then(function(p) {
@@ -776,8 +725,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		{
 						
 			if(p.data[i].pic=='') p.data[i].pic="/img/bank.jpg";				
-			
-			w = { id: p.data[i].id, 'name': p.data[i].name, 'siec': p.data[i].siec, 'picture': p.data[i].pic, 'type':'point', 'priority':p.data[i].priority, 'city':p.data[i].city, 'address':p.data[i].address, 'tel':p.data[i].tel, 'lat': p.data[i].lat, 'lon' : p.data[i].lon, 'open':p.data[i].open, 'maxloan':p.data[i].maxloan, 'waittime':p.data[i].waittime, 'distance' : getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat(p.data[i].lat),parseFloat(p.data[i].lon))};
+			w = { id: p.data[i].id, 'status':p.data[i].status, 'name': p.data[i].name, 'siec': p.data[i].siec, 'picture': p.data[i].pic, 'type':'point', 'priority':p.data[i].priority, 'city':p.data[i].city, 'address':p.data[i].address, 'tel':p.data[i].tel, 'lat': p.data[i].lat, 'lon' : p.data[i].lon, 'open':p.data[i].open, 'maxloan':p.data[i].maxloan, 'waittime':p.data[i].waittime, 'distance' : getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat(p.data[i].lat),parseFloat(p.data[i].lon))};
 						//console.log(w);
 			$scope.whoiswhere.push(w);
 			
@@ -807,7 +755,7 @@ MapApp.controller('SettingsCtrl', function($scope,userdata) {
 		window.localStorage.setItem('loanvalue',$scope.user.loanvalue);
 		window.localStorage.setItem('waittime',$scope.user.waittime);
 		
-		window.location.hash="#/map/home";
+		window.location.hash="#!/pozyczka/home";
 	}
 	
 	
@@ -836,7 +784,7 @@ MapApp.controller('PersonalCtrl', function($scope,userdata) {
 		window.localStorage.setItem('dowod',dowod);
 		window.localStorage.setItem('pesel',pesel);
 		
-		window.location.hash="#/map/home";
+		window.location.hash="#!/pozyczka/home";
 	}
   
 });
@@ -849,6 +797,7 @@ MapApp.controller('OrderedCtrl', function($scope,orderdata) {
 
 
 MapApp.controller('PointCtrl', function($scope,$ionicPopup,$http,$timeout,pointId) {
+	$scope.screenformheight=window.innerHeight-88;
 	$scope.pointId = pointId;
 	var uri="https://bliskapozyczka.pl/p.php?p="+parseInt(pointId);	
 	console.log(uri);
@@ -887,7 +836,7 @@ MapApp.controller('ConfirmCtrl', function($scope,$ionicPopup,$http,$timeout,sett
 			},0);
 	});
 	
-	
+	/*	
 	$scope.groups = [
 	{name:"Adres zameldowania",  items: [ { type: 'text', name: 'adres', placeholder: 'Ulica i numer domu', value: '' } , { type: 'text', name: 'city', placeholder: 'Miasto', value: '' } , { type: 'text', name: 'postcode', placeholder: 'Kod pocztowy', value: '' } ] } ];
 	
@@ -902,18 +851,19 @@ MapApp.controller('ConfirmCtrl', function($scope,$ionicPopup,$http,$timeout,sett
 		
 		return $scope.shownGroup === group;
     };
+	*/
 	
 	$scope.orderLoanOld= function () {
 				var userdata =
 						{
-							vorname:encodeURI($scope.user.vorname),
-							name:encodeURI($scope.user.name),
-							email:encodeURI($scope.user.email),
-							phone:encodeURI($scope.user.phone),
-							dowod:encodeURI($scope.user.dowod),
-							pesel:encodeURI($scope.user.pesel),
-							loanvalue:encodeURI($scope.settings.loanvalue),
-							punkt:encodeURI($scope.pointId),
+							vorname:encodeURIComponent($scope.user.vorname),
+							name:encodeURIComponent($scope.user.name),
+							email:$scope.user.email,
+							phone:encodeURIComponent($scope.user.phone),
+							dowod:encodeURIComponent($scope.user.dowod),
+							pesel:encodeURIComponent($scope.user.pesel),
+							loanvalue:encodeURIComponent($scope.settings.loanvalue),
+							punkt:encodeURIComponent($scope.pointId),
 							waittime:window.localStorage.getItem('waittime')
 						};
 				
@@ -941,11 +891,11 @@ MapApp.controller('ConfirmCtrl', function($scope,$ionicPopup,$http,$timeout,sett
 												  }
 												]
 											  });
-											   window.location.hash="#/map/home";
+											   window.location.hash="#!/pozyczka/home";
 											},
 											error:  function(jqXHR, textStatus, ex) {
 												alert('Błąd sieci!');
-												window.location.hash="#/map/home";
+												window.location.hash="#!/pozyczka/home";
 											}
 										});
 										
@@ -990,7 +940,7 @@ MapApp.service('UserdataService', function($q) {
 	var loanvalue = window.localStorage.getItem('loanvalue');
 	var waittime = window.localStorage.getItem('waittime');
 	
-	if(!loanvalue) { loanvalue=1234; window.localStorage.setItem('loanvalue',loanvalue); }
+	if(!loanvalue) { loanvalue=2000; window.localStorage.setItem('loanvalue',loanvalue); }
 	if(!waittime)  { waittime=45; window.localStorage.setItem('waittime',waittime); }
 	
 	
@@ -1081,14 +1031,21 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 			
 			console.log(attrs);
 			scope.mapHeight= window.innerHeight-88;
-			scope.modalHeight=(window.innerHeight-88) * 0.9;
-			scope.modalContentHeight = ((window.innerHeight-88) * 0.9) - 88;
+			scope.modalHeight=(window.innerHeight-88);
+			scope.modalContentHeight = window.innerHeight-44;
 	
-			$ionicModal.fromTemplateUrl('templates/confirmmodal.html?v=903', {
+			$ionicModal.fromTemplateUrl('templates/confirmmodal.html?v=970', {
                 scope: scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
                 scope.cmodal = modal
+            });
+			
+			$ionicModal.fromTemplateUrl('templates/tmobilemodal.html', {
+                scope: scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                scope.tmmodal = modal
             });
 			
 			
@@ -1097,14 +1054,14 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 				
 				var userdata =
 						{
-							vorname:encodeURI(scope.user.vorname),
-							name:encodeURI(scope.user.name),
-							email:encodeURI(scope.user.email),
-							phone:encodeURI(scope.user.phone),
-							dowod:encodeURI(scope.user.dowod),
-							pesel:encodeURI(scope.user.pesel),
-							loanvalue:encodeURI(scope.settings.loanvalue),
-							punkt:encodeURI(scope.pointId),
+							vorname:encodeURIComponent(scope.user.vorname),
+							name:encodeURIComponent(scope.user.name),
+							email:scope.user.email,
+							phone:encodeURIComponent(scope.user.phone),
+							dowod:encodeURIComponent(scope.user.dowod),
+							pesel:encodeURIComponent(scope.user.pesel),
+							loanvalue:encodeURIComponent(scope.settings.loanvalue),
+							punkt:encodeURIComponent(scope.pointId),
 							waittime:window.localStorage.getItem('waittime')
 						};
 				
@@ -1137,7 +1094,7 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 											},
 											error:  function(jqXHR, textStatus, ex) {
 												alert('Błąd sieci!');
-												window.location.hash="#/map/home";
+												window.location.hash="#!/pozyczka/home";
 											}
 										});
 										
@@ -1146,15 +1103,21 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 			}
 			
 			scope.openCModal=function(id) {
-				//console.log(scope.modalHeight);
-				//console.log(scope.modalContentHeight);
-				//console.log(scope.pointId);
-				//console.log(id);
 				scope.cmodal.show();
 			}
 			
+			scope.openTMobileModal=function(id) {
+				scope.tmmodal.show();
+			}
+
+			
+			
 			scope.closeCModal=function() {
 				scope.cmodal.hide();
+			}
+			
+			scope.closeTMobileModal=function() {
+				scope.tmmodal.hide();
 			}
 
    			// callback when google maps is loaded
@@ -1287,17 +1250,33 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 			
 			}
 			
+			scope.tmobileForm = function(id) {
+				scope.pointId=id;
+				scope.openTMobileModal(id);
+			
+			}
+			
 			scope.pointInfo = function(slugname,id) {
-				window.location.hash="#/map/p/"+slugname+'/'+id;
+				window.location.hash="#!/pozyczka/p/"+slugname+'/'+id;
 			}
 			
 			function convertToSlug(Text)
 			{
-				return Text
-						.toLowerCase()
-						.replace(/ /g,'-')
-						.replace(/[^\w-]+/g,'')
-						;
+				var str = Text.replace(/^\s+|\s+$/g, ''); // trim
+				str = str.toLowerCase();
+
+				// remove accents, swap ñ for n, etc
+				var from = "ąćęłńóśźżãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+				var to   = "acelnoszzaaaaaeeeeeiiiiooooouuuunc------";
+				for (var i=0, l=from.length ; i<l ; i++) {
+					str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+				}
+
+				str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+					.replace(/\s+/g, '-') // collapse whitespace and replace by -
+					.replace(/-+/g, '-'); // collapse dashes
+	
+			  return str;
 			}
 			
 
@@ -1305,7 +1284,8 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 			function onItemClick(pin, id, label, open, city, address, tel, waittime, priority,member) { 
 							var contentString;
 				
-						
+						if(member.status!=5)
+						{
 							if(window.innerWidth>430)
 							{ 
 								contentString = '<div id="infobox" style="width:420px;" >'+
@@ -1320,9 +1300,9 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
                             '<dt style="margin-top:8px;"><b>Godziny otwarcia</b></dt>'+
                             '<dd>' + member.open +'</dd>'+
                             '<dt style="margin-top:8px;"><b>Czas oczekiwania</b></dt>'+
-                            '<dd>' + member.waittime +'</dd>'+
+                            '<dd>' + member.waittime +' minut</dd>'+
                             '<dt style="margin-top:8px;"><b>Maks. Pożyczka</b></dt>'+
-                            '<dd>' + member.maxloan +'</dd>'+
+                            '<dd>' + member.maxloan +' PLN</dd>'+
 							'</dl>'+
 							'<a ng-click="confirmUserdata('+id+')" style="display:block;background:#ef473a;color:#FFF;text-align:center;border-radius:5px;padding:15px;margin-top:10px;">ZAMÓW POŻYCZKĘ</a>'+
 							'</div></div>';
@@ -1338,8 +1318,43 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 							'<a ng-click="confirmUserdata('+id+')" style="display:block;background:#ef473a;text-align:center;border-radius:5px;padding:10px;margin-top:10px;">ZAMÓW POŻYCZKĘ</a>'+
 							'</div></div>';
 							}
+						}
 							
-							
+						if(member.status==5)
+						{
+							if(window.innerWidth>430)
+							{ 
+								contentString = '<div id="infobox" style="width:420px;" >'+
+							'<div style="float:left;width:50%;box-sizing:border-box;padding-right:10px;">'+
+							'<img src="'+member.picture+'" alt="" style="width:100%;height:auto;background:#000;border-radius:5px;" />'+
+							'<a ng-click="pointInfo(\''+convertToSlug(member.name)+'\','+id+')" style="display:block;background:#DFDFDF;text-align:center;border-radius:5px;padding:15px;margin-top:10px;">SZCZEGÓŁY</a>'+
+							'</div><div style="float:right;width:50%;box-sizing:border-box;padding-left:10px;">'+
+							'<h3 style="font-size:200%;color:#29BFAF;margin:10px 0 !important;">'+member.name+'</h3>'+
+							'<dl>'+
+							'<dt><b>Adres</b></dt>'+
+                            '<dd>' + member.address +'</dd>'+
+                            '<dt style="margin-top:8px;"><b>Godziny otwarcia</b></dt>'+
+                            '<dd>' + member.open +'</dd>'+
+                            '<dt style="margin-top:8px;"><b>Czas oczekiwania</b></dt>'+
+                            '<dd>' + member.waittime +' minut</dd>'+
+                            '<dt style="margin-top:8px;"><b>Maks. Pożyczka</b></dt>'+
+                            '<dd>' + member.maxloan +' PLN</dd>'+
+							'</dl>'+
+							'<a ng-click="tmobileForm('+id+')" style="display:block;background:#ef473a;color:#FFF;text-align:center;border-radius:5px;padding:15px;margin-top:10px;">ZAMÓW POŻYCZKĘ</a>'+
+							'</div></div>';
+							}
+							else // telefony
+							{
+								contentString = '<div id="infobox" style="width:"'+window.innerWidth+'px;" >'+
+							'<div style="float:none;width:100%;box-sizing:border-box;padding-right:10px;text-align:center">'+
+							'<img src="'+member.picture+'" alt="" style="width:60%;height:auto;background:#000;border-radius:5px;" />'+
+							'</div><div style="float:none;width:100%;box-sizing:border-box;padding-right:10px;">'+
+							'<h3 style="font-size:140%;color:#29BFAF;margin:10px 0 !important;">'+member.name+'</h3>'+
+							'<a ng-click="pointInfo(\''+convertToSlug(member.name)+'\','+id+')" style="display:block;background:#DFDFDF;text-align:center;border-radius:5px;padding:10px;margin-top:10px;">SZCZEGÓŁY</a>'+	
+							'<a ng-click="tmobileForm('+id+')" style="display:block;background:#ef473a;text-align:center;border-radius:5px;padding:10px;margin-top:10px;">ZAMÓW POŻYCZKĘ</a>'+
+							'</div></div>';
+							}
+						}	
 				
 				// Replace our Info Window's content and position
 				var compiled=$compile(contentString)(scope);
@@ -1351,13 +1366,13 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 					infowindow.close();
 					$rootScope.$broadcast('PIN_CLOSE');	
 					});
-					
+				scope.pointId=id;	
 				$rootScope.$broadcast('PIN_CLICK', id);	
 				
 			} 
 
 			function markerCb(marker, member, location) {
-				console.log('markerCb');
+				//console.log('markerCb');
 			    return function() {
 					//console.log("map: marker listener for " + member.name);
 					var href="https://maps.apple.com/?q="+member.lat+","+member.lon;
@@ -1399,10 +1414,14 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 						else
 						{
 							//console.log(m);
-							if(m.siec!=='Fines')
-								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_1.PNG' });
+							if(m.status<=4)
+								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_fines.png' });
+							else if	(m.status==5)
+								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_tmobile.png' });
+							else if	(m.status==6)
+								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_prometeusz.png' });
 							else
-								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_2.PNG' });
+								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_1.PNG' });
 							
 							google.maps.event.addListener(mm, 'mousedown', markerCb(mm, m, loc));
 							//google.maps.event.addListener(mm, 'touchend', alert('touchend'));

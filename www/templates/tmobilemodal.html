@@ -1,0 +1,21 @@
+<ion-modal-view style="height:{{modalHeight}}px">
+
+			<ion-header-bar>
+			
+			  <h1 class="title">Potwierdź dane</h1>
+			<div class="buttons">
+					<button class="button button-small button-calm" style="padding-left:4px!important;padding-right:4px!important" ng-click="closeTMobileModal()">Anuluj</button>
+				</div>  
+			</ion-header-bar>
+			
+				<ion-content class="has-header padding" scroll="true">
+<ion-scroll direction="y" style="height:{{modalContentHeight}}px">						
+				 <div id="iframeloading">	
+					<h5>Ładuję ... <img src="/ajax-loader.gif"></img></h5>
+				 </div>
+				  <iframe src="https://form.t-mobilebankowe.pl/fk_forms/index.html?application_ID=5050&partner_id=0021&source=SFF" width=100% height=1000 style="width=100%; zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; " onload="$('#iframeloading').hide()"></iframe>
+				 <div style="height:200px"></div>
+</ion-scroll>
+				</ion-content>
+		
+</ion-modal-view>

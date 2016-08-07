@@ -1,14 +1,14 @@
 <ion-view> 
 			<ion-nav-title >
-				<span ng-show="!whoiswhere"  style="float:left"><ion-spinner style="margin-top:5px" icon="ios"></ion-spinner></span>
-				 <a href="/" ><img src="img/logo.png" style="max-width:200px" alt="Bliska po�yczka"></a> 
+				 <span ng-show="!whoiswhere"  style="float:left"><ion-spinner style="margin-top:5px" icon="ios"></ion-spinner></span>
+				 <a href="/" ><img src="img/logo.png" style="max-width:200px" alt="Bliska pożyczka"></a> 
 			</ion-nav-title>
 			<ion-content class="has-header ">
 		
 			<!-- map directive-->
 			<app-map style="height:{{mapHeight}}px;width:{{mapWidth}}px;"
 				center="basel"
-				zoom="12"
+				zoom="13"
 				markers="whoiswhere"
 				loading="loading"
 				user="user"
@@ -17,15 +17,27 @@
 			</app-map>
 			</ion-content>
 			</ion-view>
-			<ion-footer-bar class="bar-dark">
+			<ion-footer-bar class="bar bar-light" >
 				
 				<div class="buttons">
 				<button class="button button-icon ion-more"  style="float:left;padding:0px!important;" ng-click="popover.show($event)">
 				</button>
+					<button class="button "  style="padding:0px!important;margin-left:20px!important;" >{{version}}</button>
+					<button class="button "  style="padding:0px!important;margin-left:20px!important;" ng-click="regulamin()">Regulamin</button>
+					<div ng-show="showHowTo">
+						
+						<button class="button "  style="padding:0px!important;margin-left:20px!important"  ng-click="openModal3()">Jak to działa?</button>
+					</div>
+					<div ng-show="showCert" >
+						<button class="button"  style="padding:0px!important;margin-left:20px!important" >Certyfikaty i wyróżnienia:</button>
+						<img class="img-zoom" src="/assets/images/popup/jakosc.png" style="height:36px;margin-left:15px"></img>
+						<img class="img-zoom" src="/assets/images/popup/odpowiedzialnosc.png" style="height:36px;margin-left:15px"></img>
+						<img class="img-zoom" src="/assets/images/popup/banking-magazine.png" style="height:36px;margin-left:15px"></img>
+						<img class="img-zoom" src="/assets/images/popup/secure.png" style="height:36px;margin-left:15px"></img>
+						
+					</div>
+					
 				</div>
-				<h1 class="title">&nbsp;</h1>
-				<div class="buttons">
-					<button class="button pull-right "  style="padding:0px!important;">{{version}}</button>
-				</div>
+				
 				
 			</ion-footer-bar>

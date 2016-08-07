@@ -15,14 +15,15 @@
 
 
 <ion-view title="Dodawanie punktu">
-  <ion-content >
+
+ <ion-content >
   <ion-scroll direction="y" style="height:{{screenformheight}}px">
   <div class="card" >
   <div class="item item-divider">
   Jeśli Twojego punktu nie ma na mapie - możesz go łatwo dodać korzystając z poniższego formularza.<br/>
   Koszt dodania punktu:<br/>
   <ul>
-	  <li>Na 1 miesiąc - 59 zł brutto (48 zł netto + VAT)</li>
+	  <li>Na 1 miesiąc - <span style="text-decoration: line-through;">59 zł brutto</span> <span style="color: red;font-weight:bolder">Promocja "Satysfakcja gwarantowana" 19,99 zł brutto (16,65 zł netto + VAT)</span></li>
 	  <li>Na 3 miesiące - 149 zł brutto (121 zł netto + VAT) * oszczędzasz 15%</li>
 	  <li>Na 12 miesięcy - 528 zł brutto (429 zł netto + VAT) * oszczędzasz 25%</li>
   </ul>
@@ -187,13 +188,30 @@
 		</label>
 	</div>
   </div> 	
-  
+  <div class="card">
+	<div class="item item-divider pointview_section_header">
+     Dane do faktury:
+	</div>
+	<label class="item item-input">
+		<span class="input-label">Nazwa firmy</span>
+		<input type="text" name="invoice_company" placeholder="Nazwa firmy" ng-minlength="2" ng-maxlength="100" >
+	</label>
+	<label class="item item-input">
+		<span class="input-label">NIP</span>
+		<input type="text" name="invoice_nip" placeholder="NIP" ng-minlength="10" ng-maxlength="10" >
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Adres</span>
+		<input type="text" name="invoice_address" placeholder="Pełny adres firmy" ng-minlength="2" ng-maxlength="100" >
+		</div>
+	</label>
+  </div> 	
 <div class="card">
 	<div class="item item-divider pointview_section_header">
      Wybierz abonament {{item}}:
 	</div>
 	<ion-list>
-		<ion-radio ng-repeat="i in abomode" ng-value="i.Id" ng-model="$parent.abooption" >{{i.Name}} - {{i.Price}} brutto <div ng-if="i.Save">(oszczędzasz {{i.Save}}%)</div></ion-radio>
+		<ion-radio ng-repeat="i in abomode" ng-value="i.Id" ng-model="$parent.abooption" ><div ng-if="!i.Promo">{{i.Name}} - {{i.Price}} brutto <div ng-if="i.Save">(oszczędzasz {{i.Save}}%)</div></div><div ng-if="i.Promo">{{i.Name}} <span style="text-decoration: line-through;">{{i.Price}} brutto </span> <span style="color: red;font-weight:bolder">{{i.Promo}} {{i.PromoPrice}}</span></div></ion-radio>
 	</ion-list>
   </div> 	
   
@@ -205,6 +223,3 @@
  </ion-scroll>
 </ion-content>
 </ion-view>
-<ion-footer-bar class="bar-dark">
-			<a href="#/t/map/home" nav-clear menu-close class="button button-small button-dark" >wróć do mapy</button>
-</ion-footer-bar>

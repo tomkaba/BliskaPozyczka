@@ -1,9 +1,9 @@
-<ion-modal-view style="height:{{modalHeight}}px" id="index">
+<ion-modal-view style="width: 90%; height: 90%; top: 5%; left: 5%; right: 5%; bottom: 5%;" id="index">
 			<ion-header-bar id="topper" style="border:0">
 			
 					<button class="button button-small " style="background-color:rgba(255, 255, 255, 0.25);padding:3px!important" ng-click="closeModal2()">Pomiń</button>
 			
-					<h1 class="title"><img src="img/logo.png" style="max-width:200px" alt="Bliska pożyczka"></h1>
+					<!-- <h1 class="title"><img src="img/logo.png" style="max-width:200px" alt="Bliska pożyczka"></h1> -->
 			</ion-header-bar>
 			
 			<section id="start">
@@ -13,10 +13,10 @@
 					<div style="clear:both"></div>
  
 			  <ion-list style="background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana;">
-			  <div class="item item-input-inset" style="background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana;">
+			  <div class="item item-input-inset" style="background:transparent;border:0;font-family: 'Roboto Condensed', Helvetica, Verdana";color:#333;>
 								<div class="item item-input-inset" style="background:transparent;border:0;width:100%"	>
 									
-									<input id="searchinput"  type="text" placeholder="{{item.placeholder}}" ng-change="search()" ng-model="data.search">
+									<input id="searchinput"  type="text" placeholder="{{item.placeholder}}" ng-change="search()" ng-model="data.search" style="color:black!important">
 									
 									<button id="searchsubmit" ng-disabled="!data.search" ng-click="manualLocalization()"></button>
 									
