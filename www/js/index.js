@@ -393,7 +393,7 @@ MapApp.factory('FlightDataService', function($q, $timeout,$rootScope) {
 
 
  
-MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService, payConfirmModal,citySlug) {
+MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$ionicLoading,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService, payConfirmModal,citySlug) {
 
 	$scope.version='v. 0.970';
 	$scope.mapHeight= window.innerHeight-88;
@@ -442,7 +442,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		$scope.modal = modal;
 	  });
 	  $scope.openModal = function() {
-		$scope.modal.show();
+		if(typeof($scope.modal)!=='undefined') $scope.modal.show();
 	  };
 	  $scope.closeModal = function() {
 		window.localStorage.setItem('defaultManualAddress','');
@@ -549,6 +549,10 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		$scope.closeModal();
 		$scope.closeModal2();
 		$scope.closeModal3();
+		console.log('LOADING: SHOW');
+		$ionicLoading.show({
+			templateUrl:"templates/localizationinprogress.html"
+		});
 		
 		geocoder.geocode( { 'address': address}, function(results, status) {
 
@@ -574,10 +578,13 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 				}
 					
 				$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-				$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);			
+				$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
+				$ionicLoading.hide();		
 			}
 		else
 		    {
+			console.log('LOADING: HIDE');
+			$ionicLoading.hide();
 			
 			$ionicPopup.alert({title:'Nie ma takiego adresu',template:'Nie ma takiego miasta '+address+'... jest Lądek, Lądek Zdrój. W tej sytuacji startujemy bez geolokalizacji, możesz ustawić miasto korzystając z opcji w aplikacji.'});
 
@@ -593,6 +600,9 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					  maximumAge        : 30000, 
 					  timeout           : 27000
 				};
+				
+				
+				
 				
 				navigator.geolocation.getCurrentPosition(function(position) {
 					$scope.position=position;
@@ -645,18 +655,24 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					console.log("Error retrieving position " + e.code + " " + e.message); 
 					$scope.gotoLocation($scope.basel.lat, $scope.basel.lon); 
 					var i;
-					for(i=1;i<$scope.whoiswhere.length;i++)
+					if(typeof($scope.whoiswhere)!=='undefined')
 					{
-						$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
-						
-						if(parseFloat($scope.whoiswhere[i].lat)>0 && parseFloat($scope.whoiswhere[i].lon)>0 && $scope.whoiswhere[i].distance<0.1) 
-							$scope.whoiswhere[i].distance=0.1;
+						for(i=1;i<$scope.whoiswhere.length;i++)
+						{
+							$scope.whoiswhere[i].distance=getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat($scope.whoiswhere[i].lat),parseFloat($scope.whoiswhere[i].lon));
+							
+							if(parseFloat($scope.whoiswhere[i].lat)>0 && parseFloat($scope.whoiswhere[i].lon)>0 && $scope.whoiswhere[i].distance<0.1) 
+								$scope.whoiswhere[i].distance=0.1;
+						}
+								
+						$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
+						$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
 					}
 					
-					$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
-					$rootScope.$broadcast('DISTANCE_CALCULATED', $scope.whoiswhere);	
-					
 				}, geo_options);
+				
+				console.log('LOADING HIDE');
+				$ionicLoading.hide();
 				
 				$scope.gotoLocation = function (lat, lon) {
 					
@@ -688,35 +704,28 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 	  return d.toFixed(1);
 	}
 
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    } else {
+        onDeviceReady();
+    }
 	
-    document.addEventListener("deviceready", onDeviceReady, false);
-    
-  
-	function onDeviceReady() {
-		console.log('OnDeviceReady');	
-		$scope.centerMe();
-		$scope.loading = false;
-		
-		if($scope.payConfirmModal)
-		{
-			$ionicPopup.show({
-														template: 'Twój Punkt został zgłoszony do dodania. W ciągu 24 godzin dokonamy weryfikacji zgłoszenia i zamieścimy punkt na mapie. O zamieszczeniu punktu powiadomimy Cię pocztą elektroniczną.',
-														title: 'Gratulacje!',
-														subTitle: 'Punkt został zgłoszony',
-														buttons: [
-														  { text: 'OK',
-															type: 'button-positive' ,
-														  }
-														],
-														
-													  });
-		}
-		
-		if (typeof(Number.prototype.toRadians) === "undefined") {
+  	if (typeof(Number.prototype.toRadians) === "undefined") {
 			Number.prototype.toRadians = function() {
 				return this * Math.PI / 180;
 			}
-		}
+	}
+		
+	function onDeviceReady() {
+		console.log('LOADING: show');	
+		$ionicLoading.show({
+			templateUrl:"templates/localizationinprogress.html"
+		});
+		
+		$scope.centerMe();
+		$scope.loading = false;
+		
+	
 		
 		whoiswhereService.all().then(function(p) {
 
@@ -738,6 +747,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 				{
 					cities.push(p.data[i].city);
 				}
+				
 		}
 		
 		$scope.whoiswhere.sort(function(a, b){return a.distance-b.distance});
@@ -748,7 +758,20 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		});
 	}	
 	
-	
+	if($scope.payConfirmModal)
+		{
+			$ionicPopup.show({
+														template: 'Twój Punkt został zgłoszony do dodania. W ciągu 24 godzin dokonamy weryfikacji zgłoszenia i zamieścimy punkt na mapie. O zamieszczeniu punktu powiadomimy Cię pocztą elektroniczną.',
+														title: 'Gratulacje!',
+														subTitle: 'Punkt został zgłoszony',
+														buttons: [
+														  { text: 'OK',
+															type: 'button-positive' ,
+														  }
+														],
+														
+													  });
+		}
 });
 
 /**
