@@ -362,7 +362,7 @@ MapApp.factory('whoiswhereService', function($http) {
   return {
     all: function() {
       // Return promise (async callback)
-	  var url="https://bliskapozyczka.pl/p.php?rand="+Math.floor((Math.random() * 100) + 1);
+	  var url="https://bliskapozyczka.pl/p.php?mode=mobi&rand="+Math.floor((Math.random() * 100) + 1);
 	  //console.log(url);
       return $http.get(url);
     }
@@ -736,7 +736,7 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		for(i=0;i<p.data.length;i++)
 		{
 						
-			if(p.data[i].pic=='') p.data[i].pic="/img/bank.jpg";				
+			if(p.data[i].pic=='') p.data[i].pic="img/bank.jpg";				
 			w = { id: p.data[i].id, 'status':p.data[i].status, 'name': p.data[i].name, 'siec': p.data[i].siec, 'picture': p.data[i].pic, 'type':'point', 'priority':p.data[i].priority, 'city':p.data[i].city, 'address':p.data[i].address, 'tel':p.data[i].tel, 'lat': p.data[i].lat, 'lon' : p.data[i].lon, 'open':p.data[i].open, 'maxloan':p.data[i].maxloan, 'waittime':p.data[i].waittime, 'distance' : getDistanceFromLatLonInKm($scope.basel.lat,$scope.basel.lon,parseFloat(p.data[i].lat),parseFloat(p.data[i].lon))};
 						//console.log(w);
 			$scope.whoiswhere.push(w);
@@ -826,12 +826,12 @@ MapApp.controller('OrderedCtrl', function($scope,orderdata) {
 MapApp.controller('PointCtrl', function($scope,$ionicPopup,$http,$timeout,pointId) {
 	$scope.screenformheight=window.innerHeight-88;
 	$scope.pointId = pointId;
-	var uri="https://bliskapozyczka.pl/p.php?p="+parseInt(pointId);	
+	var uri="https://bliskapozyczka.pl/p.php?mode=mobi&p="+parseInt(pointId);	
 	console.log(uri);
 	$http.get(uri).then(function(response){
 			$timeout(function() {
 					console.log(response);
-					if(response.data.zdjecie=='') response.data.zdjecie="/img/bank.jpg";
+					if(response.data.zdjecie=='') response.data.zdjecie="img/bank.jpg";
 					$scope.pointInfo=response;
 					
 			},0);
@@ -848,7 +848,7 @@ MapApp.controller('ConfirmCtrl', function($scope,$ionicPopup,$http,$timeout,sett
 	$scope.user = userdata;
 	$scope.pointId = pointId;
 	
-	$http.get("https://bliskapozyczka.pl/p.php?p="+parseInt(pointId)).then(function(response){
+	$http.get("https://bliskapozyczka.pl/p.php?mode=mobi&p="+parseInt(pointId)).then(function(response){
 			$timeout(function() {
 			
 					console.log(response);

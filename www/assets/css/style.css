@@ -227,7 +227,7 @@ ul li {
           max-width: 960px;
           width: 100%;
           box-sizing: border-box;
-          background: #FFF url(/assets/images/popup/watermark.png) no-repeat left bottom;
+          background: #FFF url(assets/images/popup/watermark.png) no-repeat left bottom;
           font-size: 18px;
           -webkit-transform: translate(-50%,-50%);
           -moz-transform: translate(-50%,-50%);
