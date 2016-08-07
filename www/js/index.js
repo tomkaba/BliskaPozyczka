@@ -669,31 +669,6 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 					}
 				};	
 	};
-		
-	
-	$scope.centerMe();
-	$scope.loading = false;
-	
-	if($scope.payConfirmModal)
-	{
-		$ionicPopup.show({
-													template: 'Twój Punkt został zgłoszony do dodania. W ciągu 24 godzin dokonamy weryfikacji zgłoszenia i zamieścimy punkt na mapie. O zamieszczeniu punktu powiadomimy Cię pocztą elektroniczną.',
-													title: 'Gratulacje!',
-													subTitle: 'Punkt został zgłoszony',
-													buttons: [
-													  { text: 'OK',
-														type: 'button-positive' ,
-													  }
-													],
-													
-												  });
-	}
-	
-	if (typeof(Number.prototype.toRadians) === "undefined") {
-		Number.prototype.toRadians = function() {
-			return this * Math.PI / 180;
-		}
-	}
 	
 	function deg2rad(deg) {
 		return deg * (Math.PI/180)
@@ -712,8 +687,38 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 	  var d = R * c; // Distance in km
 	  return d.toFixed(1);
 	}
+
 	
-	whoiswhereService.all().then(function(p) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    
+  
+	function onDeviceReady() {
+		console.log('OnDeviceReady');	
+		$scope.centerMe();
+		$scope.loading = false;
+		
+		if($scope.payConfirmModal)
+		{
+			$ionicPopup.show({
+														template: 'Twój Punkt został zgłoszony do dodania. W ciągu 24 godzin dokonamy weryfikacji zgłoszenia i zamieścimy punkt na mapie. O zamieszczeniu punktu powiadomimy Cię pocztą elektroniczną.',
+														title: 'Gratulacje!',
+														subTitle: 'Punkt został zgłoszony',
+														buttons: [
+														  { text: 'OK',
+															type: 'button-positive' ,
+														  }
+														],
+														
+													  });
+		}
+		
+		if (typeof(Number.prototype.toRadians) === "undefined") {
+			Number.prototype.toRadians = function() {
+				return this * Math.PI / 180;
+			}
+		}
+		
+		whoiswhereService.all().then(function(p) {
 
 		var i;
 		var w;
@@ -740,7 +745,8 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 		
 		$rootScope.cities=cities;
 		$scope.centerMe();
-	});
+		});
+	}	
 	
 	
 });
@@ -1388,7 +1394,7 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 			function updateMarkers( markersparam ) {
 				console.log('update markers');
 				
-				if(markersparam.length)
+				if(typeof(markersparam)!=='undefined' && markersparam.length)
 				{
 				   scope.markers=markersparam;
 				}
