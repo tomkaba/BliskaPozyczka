@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.phonegap.bliskapozyczka" version="0.91">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.happyproject.bliskapozyczka" version="0.91">
   <name>Bliska Pożyczka</name>
   <description>Pożyczki w Twojej okolicy - wybierz, zamów i odbierz pożyczkę w kilka chwil.</description>
   <author href="http://happyproject.pl" email="happy@happyproject.pl">HappyProject</author>
