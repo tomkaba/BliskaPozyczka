@@ -25,9 +25,9 @@ MapApp.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', f
 			url: '/home', 
 			cache: true,
 			views: {'menuContent': {templateUrl: 'templates/gpsView.html', controller: 'GpsCtrl',resolve: { payConfirmModal: function () { return false; }, 
-				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  } , citySlug: function() {	return '';  } 
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  } , citySlug: function() {	return '';  } , piny: function(loadsettingsService) { return loadsettingsService.promise; }
 				} }, 'rightPanel': {templateUrl: 'templates/rightsidebarView.html', controller: 'RightPanelCtrl',resolve: {
-				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  
+				settings: function(UserdataService) {	return UserdataService.getUserdata(); }  , userdata: function(UserpersonalService) {	return UserpersonalService.getUserdata();  }  , piny: function(loadsettingsService) { return loadsettingsService.promise; }
 				} } }
 			 })
 		.state('menu.city', {
@@ -362,7 +362,7 @@ MapApp.factory('whoiswhereService', function($http) {
   return {
     all: function() {
       // Return promise (async callback)
-	  var url="https://bliskapozyczka.pl/p.php?mode=mobi&rand="+Math.floor((Math.random() * 100) + 1);
+	  var url="https://bliskapozyczka.pl/p.php?mode=mobi";
 	  //console.log(url);
       return $http.get(url);
     }
@@ -393,7 +393,7 @@ MapApp.factory('FlightDataService', function($q, $timeout,$rootScope) {
 
 
  
-MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$ionicLoading,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService, payConfirmModal,citySlug) {
+MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDelegate,$ionicPopup,$ionicModal,$ionicPopover,$ionicLoading,$location,$rootScope,userdata,settings,whoiswhereService,FlightDataService, payConfirmModal,citySlug,piny) {
 
 	$scope.version='v. 0.970';
 	$scope.mapHeight= window.innerHeight-88;
@@ -407,6 +407,10 @@ MapApp.controller('GpsCtrl', 	function($scope, $ionicPlatform, $ionicSideMenuDel
 	$scope.basel = { lat: 52.107885, lon: 17.038538 };  //domyślny środek mapy
 	$scope.user = userdata;	
 	$scope.settings= settings;
+	$scope.pins = piny;
+	
+	console.log('PINY:');
+	console.log($scope.pins);
 	
 	$scope.payConfirmModal=payConfirmModal;
 	
@@ -1023,6 +1027,19 @@ MapApp.service('OrderdataService', function($q) {
 	}
 });
 
+MapApp.service('loadsettingsService', function($http) {
+	var pins=null;
+	var promise = $http.get('https://bliskapozyczka.pl/p.php?mode=mobi&s=1').success(function (data) {
+      pins = data;
+    });
+	return {
+		promise: promise,
+		getPins: function () {
+			return pins;
+		}
+	}
+});
+
 		
 /**
  * Handle Google Maps API V3+
@@ -1447,6 +1464,8 @@ MapApp.directive("appMap", function ($window,$compile,$http,$rootScope,$ionicMod
 								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_tmobile.png' });
 							else if	(m.status==6)
 								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_prometeusz.png' });
+							else if	(m.status==7)
+								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_GBS.png' });				
 							else
 								var mm = new google.maps.Marker({ position: loc, map: map, title: m.name, id: m.id, icon:'img/pin_1.PNG' });
 							

@@ -110,13 +110,19 @@
 							
 							<li ><a >
 							<div ng-if="item.status<=4">
-								<i style="background:url(/img/pin_fines.png) no-repeat transparent"></i>
+								<i style="background:url(img/pin_fines.png) no-repeat transparent"></i>
 							</div>
 							<div ng-if="item.status==5">
-								<i style="background:url(/img/pin_tmobile.png) no-repeat transparent"></i>
+								<i style="background:url(img/pin_tmobile.png) no-repeat transparent"></i>
 							</div>
 							<div ng-if="item.status==6">
-								<i style="background:url(/img/pin_prometeusz.png) no-repeat transparent"></i>
+								<i style="background:url(img/pin_prometeusz.png) no-repeat transparent"></i>
+							</div>
+							<div ng-if="item.status==7">
+								<i style="background:url(img/pin_GBS.png) no-repeat transparent"></i>
+							</div>
+							<div ng-if="item.status==8">
+								<i style="background:url(img/pin_1.PNG) no-repeat transparent"></i>
 							</div>
  
 										<h2>{{item.name}}</h2><address><small>{{item.city}}, {{item.address}}</small>{{item.distance}}&nbsp;km</address>
